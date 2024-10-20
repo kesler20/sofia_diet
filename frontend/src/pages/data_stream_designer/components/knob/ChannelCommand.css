@@ -1,0 +1,56 @@
+#channel-command__outer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 300px;
+  height: 300px;
+  margin-top: 10px;
+  background-color: white;
+}
+#channel-command__outer .channel-command__inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 70%;
+  background-color: rgb(250, 250, 250);
+}
+
+#channel-command__outer .channel-command__inner__controls {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}
+
+#channel-command__outer .channel-command__name {
+  color: #76889a;
+}
+
+#channel-command__outer .channel-command__slider {
+  width: 20%;
+  margin: 10px;
+  color: #27bb27;
+}
+
+#channel-command__outer .channel-command__btn {
+  width: 100px;
+  height: 38px;
+  border-radius: 10px;
+  background: radial-gradient(
+    circle at 36% 39%,
+    rgba(76, 175, 80, 1) 0%,
+    rgba(25, 133, 90, 1) 100%
+  );
+  border: none;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+#channel-command__outer .channel-command__btn:hover {
+  box-shadow: 5px 5px 40px rgb(187, 187, 187);
+}

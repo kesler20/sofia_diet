@@ -1,0 +1,7 @@
+.primary-custom-arrow {
+  clip-path: polygon(75% 0%, 90% 54%, 75% 100%, 0% 100%, 13% 49%, 0% 0%);
+}
+
+.secondary-custom-arrow {
+  clip-path: polygon(0% 0%, 75% 0%, 89% 49%, 75% 100%, 0% 100%);
+}

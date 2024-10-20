@@ -1,0 +1,161 @@
+{
+  "name": "Default Canvas Name",
+  "nodes": [
+    {
+      "id": "857Zobk7CqIVDh",
+      "type": "systemCard",
+      "position": { "x": -38.45378248332085, "y": 63.81736798220882 },
+      "data": {
+        "inputParams": [
+          { "name": "a", "values": [], "originalValues": [] },
+          { "name": "b", "values": [], "originalValues": [] }
+        ],
+        "outputParams": [{ "name": "c", "values": [], "originalValues": [] }],
+        "cardName": "Add Block",
+        "cardDetail": "Model",
+        "streamRate": 1,
+        "switchedOn": true
+      }
+    },
+    {
+      "id": "KpAIh4n8PW7S8M",
+      "type": "variableCard",
+      "position": { "x": -510.41028030619555, "y": 20.241761341839464 },
+      "data": {
+        "inputParams": [],
+        "outputParams": [
+          {
+            "name": "a Variable",
+            "values": [
+              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+              4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+              4, 4, 4, 4, 4
+            ]
+          }
+        ],
+        "cardName": "a Variable",
+        "cardDetail": "Variable",
+        "streamRate": 1,
+        "switchedOn": true,
+        "stepSize": 1,
+        "minValue": 0,
+        "maxValue": 10
+      }
+    },
+    {
+      "id": "a477HXc7Z1OIXx",
+      "type": "outputCard",
+      "position": { "x": 897.2594007086707, "y": 469.12942059821955 },
+      "data": {
+        "inputParams": [{ "name": "c Output", "values": [] }],
+        "outputParams": [],
+        "cardName": "c Output",
+        "cardDetail": "Output",
+        "streamRate": 1,
+        "switchedOn": true
+      }
+    },
+    {
+      "id": "t80piQHnzmbCMy",
+      "type": "systemCard",
+      "position": { "x": 422.99384536545466, "y": 390.08516137435026 },
+      "data": {
+        "inputParams": [
+          { "name": "a", "values": [], "originalValues": [] },
+          { "name": "b", "values": [], "originalValues": [] }
+        ],
+        "outputParams": [{ "name": "c", "values": [], "originalValues": [] }],
+        "cardName": "Auto",
+        "cardDetail": "Model",
+        "streamRate": 1,
+        "switchedOn": true
+      }
+    },
+    {
+      "id": "y6CB49a3jp43VV",
+      "type": "variableCard",
+      "position": { "x": -504.06190551212944, "y": 381.0326071065704 },
+      "data": {
+        "inputParams": [],
+        "outputParams": [
+          {
+            "name": "b Variable",
+            "values": [
+              3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+              3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+              3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+              3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+              3, 3, 3, 3, 3
+            ]
+          }
+        ],
+        "cardName": "b Variable",
+        "cardDetail": "Variable",
+        "streamRate": 1,
+        "switchedOn": true,
+        "stepSize": 1,
+        "minValue": 0,
+        "maxValue": 10
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "reactflow__edge-KpAIh4n8PW7S8Ma Variable-857Zobk7CqIVDha",
+      "source": "KpAIh4n8PW7S8M",
+      "target": "857Zobk7CqIVDh",
+      "sourceHandle": "a Variable",
+      "targetHandle": "a",
+      "type": "smoothstep",
+      "animated": true,
+      "style": { "stroke": "black" }
+    },
+    {
+      "id": "reactflow__edge-t80piQHnzmbCMyc-857Zobk7CqIVDhb",
+      "source": "t80piQHnzmbCMy",
+      "target": "857Zobk7CqIVDh",
+      "sourceHandle": "c",
+      "targetHandle": "b",
+      "type": "smoothstep",
+      "animated": true,
+      "style": { "stroke": "black" }
+    },
+    {
+      "id": "reactflow__edge-857Zobk7CqIVDhc-t80piQHnzmbCMya",
+      "source": "857Zobk7CqIVDh",
+      "target": "t80piQHnzmbCMy",
+      "sourceHandle": "c",
+      "targetHandle": "a",
+      "type": "smoothstep",
+      "animated": true,
+      "style": { "stroke": "black" }
+    },
+    {
+      "id": "reactflow__edge-y6CB49a3jp43VVb Variable-t80piQHnzmbCMyb",
+      "source": "y6CB49a3jp43VV",
+      "target": "t80piQHnzmbCMy",
+      "sourceHandle": "b Variable",
+      "targetHandle": "b",
+      "type": "smoothstep",
+      "animated": true,
+      "style": { "stroke": "black" }
+    },
+    {
+      "id": "reactflow__edge-t80piQHnzmbCMyc-a477HXc7Z1OIXxc Output",
+      "source": "t80piQHnzmbCMy",
+      "target": "a477HXc7Z1OIXx",
+      "sourceHandle": "c",
+      "targetHandle": "c Output",
+      "type": "smoothstep",
+      "animated": true,
+      "style": { "stroke": "black" }
+    }
+  ],
+  "numberOfIterations": 1000,
+  "numberOfIterationsPerSecond": 10,
+  "simulationStart": 0,
+  "simulationEnd": 100,
+  "simulationType": "stream"
+}

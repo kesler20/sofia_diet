@@ -1,0 +1,21 @@
+{
+  "inputParams": [
+    {
+      "name": "a Variable",
+      "values": [],
+      "userSelectedInput": true
+    },
+    {
+      "name": "b Variable",
+      "values": [],
+      "userSelectedInput": true
+    }
+  ],
+  "outputParams": [{ "name": "c Output", "values": [] }],
+  "cardName": "Test pipeline",
+  "cardDetail": "System",
+  "streamRate": 1,
+  "switchedOn": true,
+  "content": "{\"name\":\"Test pipeline\",\"nodes\":[{\"id\":\"f02uvh54T46Bhp\",\"type\":\"systemCard\",\"position\":{\"x\":-132.77029238056437,\"y\":93.57285407642792},\"data\":{\"inputParams\":[{\"name\":\"a\",\"values\":[]},{\"name\":\"b\",\"values\":[]}],\"outputParams\":[{\"name\":\"c\",\"values\":[]}],\"cardName\":\"Add Block\",\"cardDetail\":\"Model\",\"streamRate\":1,\"switchedOn\":true,\"content\":\"def model(a, b):\\r\\n  c = a + b\\r\\n  return c\",\"version\":1},\"width\":291,\"height\":258,\"selected\":false,\"positionAbsolute\":{\"x\":-132.77029238056437,\"y\":93.57285407642792},\"dragging\":false},{\"id\":\"DDrt7Thl9EQS1j\",\"type\":\"variableCard\",\"position\":{\"x\":-582.1608940720762,\"y\":-127.93020755244623},\"data\":{\"inputParams\":[],\"outputParams\":[{\"name\":\"a Variable\",\"values\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]}],\"cardName\":\"a Variable\",\"cardDetail\":\"Variable\",\"streamRate\":1,\"switchedOn\":true,\"stepSize\":1,\"minValue\":0,\"maxValue\":10},\"width\":250,\"height\":310,\"selected\":false,\"positionAbsolute\":{\"x\":-582.1608940720762,\"y\":-127.93020755244623},\"dragging\":false},{\"id\":\"3WcjrdS4F7z4XO\",\"type\":\"variableCard\",\"position\":{\"x\":-574.4079045763474,\"y\":235.06418087784704},\"data\":{\"inputParams\":[],\"outputParams\":[{\"name\":\"b Variable\",\"values\":[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]}],\"cardName\":\"b Variable\",\"cardDetail\":\"Variable\",\"streamRate\":1,\"switchedOn\":true,\"stepSize\":1,\"minValue\":0,\"maxValue\":10},\"width\":250,\"height\":310,\"selected\":false,\"positionAbsolute\":{\"x\":-574.4079045763474,\"y\":235.06418087784704},\"dragging\":false},{\"id\":\"WHii2iLFXcwUzt\",\"type\":\"outputCard\",\"position\":{\"x\":228.4143374442544,\"y\":171.92240477307914},\"data\":{\"inputParams\":[{\"name\":\"c Output\",\"values\":[]}],\"outputParams\":[],\"cardName\":\"c Output\",\"cardDetail\":\"Output\",\"streamRate\":1,\"switchedOn\":true},\"width\":60,\"height\":60,\"selected\":true,\"positionAbsolute\":{\"x\":228.4143374442544,\"y\":171.92240477307914},\"dragging\":false}],\"edges\":[{\"source\":\"3WcjrdS4F7z4XO\",\"sourceHandle\":\"b Variable\",\"target\":\"f02uvh54T46Bhp\",\"targetHandle\":\"b\",\"type\":\"smoothstep\",\"animated\":true,\"style\":{\"stroke\":\"black\",\"strokeWidth\":3},\"id\":\"reactflow__edge-3WcjrdS4F7z4XOb Variable-f02uvh54T46Bhpb\"},{\"source\":\"DDrt7Thl9EQS1j\",\"sourceHandle\":\"a Variable\",\"target\":\"f02uvh54T46Bhp\",\"targetHandle\":\"a\",\"type\":\"smoothstep\",\"animated\":true,\"style\":{\"stroke\":\"black\",\"strokeWidth\":3},\"id\":\"reactflow__edge-DDrt7Thl9EQS1ja Variable-f02uvh54T46Bhpa\"},{\"source\":\"f02uvh54T46Bhp\",\"sourceHandle\":\"c\",\"target\":\"WHii2iLFXcwUzt\",\"targetHandle\":\"c Output\",\"type\":\"smoothstep\",\"animated\":true,\"style\":{\"stroke\":\"black\",\"strokeWidth\":3},\"id\":\"reactflow__edge-f02uvh54T46Bhpc-WHii2iLFXcwUztc Output\"}],\"numberOfIterations\":1000,\"numberOfIterationsPerSecond\":1,\"simulationStart\":0,\"simulationEnd\":100}",
+  "version": 1
+}

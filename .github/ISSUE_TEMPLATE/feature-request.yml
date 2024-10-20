@@ -1,0 +1,60 @@
+name: Feature Request
+description: Create a feature request to improve the repo
+title: "[FEATURE] "
+labels: [enhancement]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: "## Picture of feature\nAdd an image to illustrate the design or UI of the feature to create.\n\n"
+  
+  - type: markdown
+    attributes:
+      value: "## Checklist Breakdown\nThis is a list of TODOs which can be used to break down the task into smaller chunks.\n\n## Notes\nNotes related to the task.\n\n## Why Stopped\nThe reason why the task was stopped so far."
+
+  - type: input
+    id: expected_pomodoro_cycles
+    attributes:
+      label: Expected Pomodoro Cycles
+      description: "How many Pomodoro cycles do you expect this task will take?"
+      placeholder: "e.g., 1"
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: "Enter the level of priority of fixing this bug."
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+          
+  - type: input
+    id: sop
+    attributes:
+      label: SOP Link
+      description: "Provide a link to the Standard Operating Procedure (SOP) for tackling this task."
+      placeholder: "e.g., https://example.com/sop-for-bug-fixing"
+    validations:
+      required: false
+
+  - type: input
+    id: chatgpt-conversation
+    attributes:
+      label: Link to Chatgpt conversation
+      description: "Provide a link to Chatgpt conversation you started to develop this new feature."
+      placeholder: "e.g., https://example.com/sop-for-bug-fixing"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: "Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks."
+      render: shell
