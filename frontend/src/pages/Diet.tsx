@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CustomizedSlider from "../components/slider/Slider";
 import MealTable from "../components/table/MealTable";
 import BasicSelect from "../components/select/Select";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 export default function Diet() {
   const [meals, setMeals] = useState([]);
@@ -52,12 +53,11 @@ export default function Diet() {
           data={{ weekDay, meals }} // pass in the meal object
           onCreate={handleCreateDiet}
         /> */}
-        <a
-          href={`${process.env.REACT_APP_BACKEND_URL_PROD}/sofia-diet/diet/READ`}
-          className="btn m-3"
-        >
-          Get Diet
-        </a>
+        {/* Submit Button */}
+        <button className="modal__card__btn--create mb-8">
+          <p className="mr-2">Get Diet</p>
+          <FaArrowUpRightFromSquare size={"13"} />
+        </button>
       </div>
     </div>
   );

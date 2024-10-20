@@ -15,8 +15,8 @@ export default function MealTable(props: {
   };
 
   return (
-    <div className="table__container">
-      <form>
+    <form className="w-full flex flex-col items-center justify-start">
+      <div>
         <Table>
           <tbody>
             <tr>
@@ -97,7 +97,7 @@ export default function MealTable(props: {
             )}
           </tbody>
         </Table>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
