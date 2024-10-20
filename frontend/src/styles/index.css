@@ -155,6 +155,13 @@ code {
   background-color: rgba(255, 255, 255, 0.7); /* Color of the thumb when hovering */
 }
 
+.hidden-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow: -moz-scrollbars-none; /* Firefox */
+  -webkit-overflow-scrolling: touch; /* iOS Safari */
+}
+
 /* MyComponent.css */
 
 /* Hide the up and down arrows for number inputs in Chrome, Safari, and Opera */
@@ -324,6 +331,18 @@ input[type="number"] {
   );
   border: none;
   color: white;
+}
+
+.site-title {
+  /* global 94%+ browsers support */
+  background: linear-gradient(
+    90deg,
+    rgba(0, 255, 235, 1) 0%,
+    rgba(7, 58, 187, 1) 100%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .btn:hover {

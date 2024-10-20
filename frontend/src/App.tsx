@@ -6,7 +6,7 @@ import "./styles/index.css"
 
 export default function App() {
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="min-h-screen w-full">
       <BrowserRouter>
         <NavbarComponent />
         <Pages />

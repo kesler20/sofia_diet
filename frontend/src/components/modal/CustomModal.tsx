@@ -46,28 +46,27 @@ export default function CustomModal(props: {
 }) {
   return (
     <div
-      className="
+      className={`
     flex items-center justify-center
-    max-h-[550px]
-    w-[350px] h-auto
-    border-0.1 border-gray-200
+    min-w-[250px] md:min-w-[280px] max-h-[550px] h-auto
+    border-0.1 border-gray-200 relative
     bg-white
-    rounded-2xl shadow-xl"
+    rounded-2xl shadow-xl`}
     >
       <SVGBackground />
       <form className="flex items-center justify-center flex-col h-full">
         {/* Get Card Name */}
-        <div className="custom-scrollbar overflow-y-scroll h-[300px]">
+        <div className="hidden-scrollbar overflow-y-scroll h-[250px] ">
           {props.sections.map((section, index) => {
             return (
               <div className="mt-14" key={index}>
                 <SectionTitle title={`${section.name} Name ?`} />
                 <input
-                  className="
+                  className={`
               text-center
               bg-transparent
               text-black
-              ml-2"
+              ml-2`}
                   style={{
                     border: "none",
                     outline: "none",

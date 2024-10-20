@@ -16,17 +16,17 @@ export default function Food() {
     vendor: "",
   });
   return (
-    <div className="flex items-center justify-center text-[0.9rem]">
-      <div
-        className={`
-        absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[25deg]
-        w-[350px] h-[550px]
-        rounded-[15px]
-        bg-[rgb(144,80,204)]
-        shadow-[20px_20px_20px_rgb(155,155,155)]
-      `}
-      />
-      <div className="absolute top-[30%] left-[40%]">
+    <div className="overflow-x-hidden w-full pt-8 flex flex-col items-center justify-start text-[0.9rem]">
+      <div className="relative">
+        <div
+          className={`
+            absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[15deg]
+            w-[250px] h-[350px] z-[-100]
+            rounded-[15px]
+            bg-[rgb(144,80,204)]
+            shadow-[20px_20px_20px_rgb(155,155,155)]
+          `}
+        />
         <CustomModal
           sections={[
             {
@@ -37,8 +37,7 @@ export default function Food() {
             {
               name: "Calories",
               value: food.calories,
-              onChange: (e) =>
-                setFood({ ...food, calories: Number(e.target.value) }),
+              onChange: (e) => setFood({ ...food, calories: Number(e.target.value) }),
             },
             {
               name: "Protein",

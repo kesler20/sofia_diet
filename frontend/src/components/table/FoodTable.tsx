@@ -18,16 +18,17 @@ export default function FoodTable(props: {
   };
 
   return (
-    <div className="table__container">
-      <form>
-        <div className="mt-14">
+    <form className="w-full flex flex-col items-center justify-start">
+      <div>
+        <div className="w-full mt-14 mb-4">
           <SectionTitle title="Meal Name ?" />
           <input
-            className="
-            text-center
-            bg-transparent
-            text-black
-            ml-2"
+            className={`
+              text-center
+              bg-transparent
+              text-black
+              w-1/2
+              ml-2`}
             style={{
               border: "none",
               outline: "none",
@@ -40,7 +41,6 @@ export default function FoodTable(props: {
             onChange={(e) => setMealName(e.target.value)}
           />
         </div>
-
         <Table>
           <tbody>
             <tr>
@@ -121,7 +121,7 @@ export default function FoodTable(props: {
             )}
           </tbody>
         </Table>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 }
