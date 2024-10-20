@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-
 export const getResourceFromCache = <T>(key: string): T | undefined => {
   try {
     const s = localStorage.getItem(key);

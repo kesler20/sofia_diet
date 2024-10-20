@@ -1,25 +1,7 @@
-import * as React from "react";
-import PropTypes from "prop-types";
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
-
-function ValueLabelComponent(props) {
-  const { children, value } = props;
-
-  return (
-    <Tooltip enterTouchDelay={0} placement="top" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
-
-ValueLabelComponent.propTypes = {
-  children: PropTypes.element.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 const PrettoSlider = styled(Slider)({
   color: "#52af77",
@@ -61,8 +43,12 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-export default function CustomizedSlider(props) {
-  const onSliderChange = (e) => {
+export default function CustomizedSlider(props: {
+  name: string;
+  id: any;
+  onChangeValue: (e: any, id: any) => void;
+}) {
+  const onSliderChange = (e: any) => {
     props.onChangeValue(e, props.id);
   };
 

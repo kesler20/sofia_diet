@@ -27,7 +27,7 @@ export const RecipeSchema = z.object({
   tasteScore : z.number(),
 });
 
-export enum MealType {
+export enum MealsType {
   BREAKFAST = "breakfast",
   LUNCH = "lunch",
   SNACK = "snack",
@@ -78,6 +78,11 @@ export const NoSQLDbServiceParamSchema = z.object({
 //       EXPORTS            //
 //                          //
 // -------------------------//
+
+export type FoodType = z.infer<typeof FoodSchema>;
+export type RecipeType = z.infer<typeof RecipeSchema>;
+export type MealType = z.infer<typeof MealSchema>;
+export type DietType = z.infer<typeof DietSchema>;
 
 export type NoSQLDbServiceResourceType = z.infer<
   typeof NoSQLDbServiceResourceSchema
