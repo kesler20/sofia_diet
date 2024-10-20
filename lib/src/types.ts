@@ -11,6 +11,9 @@ export const NodeParamsSchema = z.object({
   values: z.array(z.number()),
   originalValues: z.array(z.number()).optional(),
   userSelectedInput: z.boolean().optional(),
+  minValue: z.optional(z.number()), // for sensors
+  maxValue: z.optional(z.number()), // for sensors
+  stepSize: z.optional(z.number()), // for sensors
 });
 
 /**
@@ -31,20 +34,10 @@ export const NodeDataSchema = z.object({
   cardDetail: z.string(),
   streamRate: z.number(),
   switchedOn: z.boolean(),
-  offset: z.number().optional(), // for sensors
-  domain: z.string().optional(), // for connectors
-  version: z.number().optional(),
-  mode: z.optional(z.union([z.literal("range"), z.literal("random")])), // for sensors
-  stepSize: z.optional(z.number()), // for sensors
-  minValue: z.optional(z.number()), // for sensors
-  maxValue: z.optional(z.number()), // for sensors
+  numberOfRows: z.number(),
+  version: z.number().optional(), // for systems
   content: z.optional(z.string()), // for models and canvas
 });
-
-export enum ModeType {
-  RANGE = "range",
-  RANDOM = "random",
-}
 
 /**
  * # Example
@@ -83,17 +76,18 @@ export const InputNodeSchema = z.object({
         values: z.array(z.number()),
         originalValues: z.array(z.number()).optional(),
         targetHandle: z.string(),
+        userSelectedInput: z.boolean().optional(),
+        minValue: z.optional(z.number()), // for sensors
+        maxValue: z.optional(z.number()), // for sensors
+        stepSize: z.optional(z.number()), // for sensors
       })
     ),
     cardName: z.string(),
     cardDetail: z.string(),
     streamRate: z.number(),
     switchedOn: z.boolean(),
-    version: z.number().optional(),
-    mode: z.optional(z.union([z.literal("range"), z.literal("random")])), // for sensors
-    stepSize: z.optional(z.number()), // for sensors
-    minValue: z.optional(z.number()), // for sensors
-    maxValue: z.optional(z.number()), // for sensors
+    numberOfRows: z.number(),
+    version: z.number().optional(), // for systems
     content: z.optional(z.string()), // for models and canvas
   }),
   sourcePosition: z.string().optional(),
@@ -139,23 +133,9 @@ export const CanvasSchema = z.object({
   edges: z.array(EdgeSchema),
   numberOfIterations: z.number(),
   numberOfIterationsPerSecond: z.number(),
-  simulationStart: z.number(),
-  simulationEnd: z.number(),
+  numberOfRows: z.number(),
   version: z.number(),
-  status: z.enum(["running", "deployed", "paused", "idle"] as const),
 });
-
-export enum CanvasStatus {
-  STREAMING = "running",
-  DEPLOYED = "deployed",
-  PAUSED = "paused",
-  IDLE = "idle",
-}
-export enum TopicsType {
-  INPUT = "development/input",
-  OUTPUT = "development/output",
-  ERRORS = "development/errors",
-}
 
 // ------------------------ //
 //                          //
@@ -168,8 +148,10 @@ export const DataPointSchema = z.object({
   value: z.number(),
 });
 
-export const SimulationOutputResultSchema = z.record(z.array(DataPointSchema));
-export const SimulationResultsSchema = z.record(SimulationOutputResultSchema);
+export const DataSetSchema = z.record(z.array(DataPointSchema));
+
+export const SimulationResultsSchema = z.record(DataSetSchema);
+
 export const SimulationErrorMessageSchema = z.object({
   message: z.string(),
 });
@@ -177,6 +159,118 @@ export const SimulationErrorMessageSchema = z.object({
 export const SimulationWithCyclesMessageSchema = z.object({
   canvas: CanvasSchema,
   cyclePaths: z.array(z.array(z.string())),
+});
+
+// -------------------------------//
+//                                //
+//       DASHBOARD BUILDER        //
+//                                //
+// -------------------------------//
+
+enum PlotTypes {
+  LINE = "line",
+  SCATTER = "scatter",
+  BAR = "bar",
+  PIE = "pie",
+}
+
+export const PlotConfigSchema = z.object({
+  x: z.string(), // this will be changed to values when you have a pie chart
+  y: z.array(z.string()), // THIS IS FOR EACH LINE IN 2D
+  z: z.string().optional(),
+  size: z.string().optional(),
+  color: z.string().optional(),
+  title: z.string().optional(),
+});
+
+export const PlotSchema = z.object({
+  name: z.string(),
+  data: DataSetSchema, // A PLOT CAN HAVE MULTIPLE LINES
+  type: z.enum([
+    PlotTypes.LINE,
+    PlotTypes.SCATTER,
+    PlotTypes.BAR,
+    PlotTypes.PIE,
+  ] as const),
+  configs: PlotConfigSchema,
+});
+
+export const DashboardSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  plots: z.array(PlotSchema),
+  streams: z.array(z.string()), // list of topics
+  indicators: z.array(DataSetSchema),
+  controllers: z.array(NodeParamsSchema), // these will be automatically grouped and then you can separate them
+});
+
+// -------------------------------//
+//                                //
+//       MQTT MESSAGE TYPES       //
+//                                //
+// -------------------------------//
+
+export const ProductionDataSchema = z.object({
+  data: z.array(z.number()),
+});
+
+export const EventMessageSchema = z.object({
+  type: z.enum(["deployment", "new device"] as const),
+  timeStamp: z.number(),
+  content: z.string(),
+});
+
+export enum TopicsType {
+  INPUT = "development/input",
+  OUTPUT = "development/output",
+  ERRORS = "development/errors",
+  MESSAGE = "development/message", // this is to make the frontend more interactive
+  EVENTS = "events",
+  PRODUCTION_ALL = "production/#",
+}
+
+export enum EventMessageTypes {
+  DEPLOYMENT = "deployment",
+  NEW_DEVICE = "new device",
+}
+
+export enum CardDetail {
+  Model = "Model",
+  DataSet = "Data Set",
+  Variable = "Variable",
+  Connector = "Connector",
+  Output = "Output",
+  Sensor = "Sensor",
+  System = "System",
+}
+
+export type ResolutionType = "second" | "minute" | "hour";
+
+// ----------------------------//
+//                             //
+//       HTTP MESSAGE TYPES    //
+//                             //
+// ----------------------------//
+
+export const FileUploadServiceParamSchema = z.object({
+  folder: z.string(),
+  filename: z.string().optional(),
+});
+
+export const FileUploadServiceResourceSchema = z.object({
+  resourceName: z.string(),
+  resourcePath: z.string(),
+  resourceContent: z.string(),
+});
+
+export const NoSQLDbServiceResourceSchema = z.object({
+  resourceName: z.string(), 
+  resourceContent: z.string(),
+});
+
+export const NoSQLDbServiceParamSchema = z.object({
+  topic: z.string(),
+  resourceName: z.string().optional(),
 });
 
 // ------------------------ //
@@ -190,9 +284,7 @@ export type NodeParamsType = z.infer<typeof NodeParamsSchema>;
 export type NodeType = z.infer<typeof NodeSchema>;
 export type EdgeType = z.infer<typeof EdgeSchema>;
 export type DataPointType = z.infer<typeof DataPointSchema>;
-export type SimulationOutputResultType = z.infer<
-  typeof SimulationOutputResultSchema
->;
+export type DataSetType = z.infer<typeof DataSetSchema>;
 export type SimulationErrorMessageType = z.infer<
   typeof SimulationErrorMessageSchema
 >;
@@ -202,3 +294,19 @@ export type InputNodeType = z.infer<typeof InputNodeSchema>;
 export type SimulationWithCyclesMessageType = z.infer<
   typeof SimulationWithCyclesMessageSchema
 >;
+export type PlotConfigType = z.infer<typeof PlotConfigSchema>;
+export type PlotType = z.infer<typeof PlotSchema>;
+export type DashboardType = z.infer<typeof DashboardSchema>;
+export type EventMessageType = z.infer<typeof EventMessageSchema>;
+export type ProductionDataType = z.infer<typeof ProductionDataSchema>;
+export type PlotConfigSchemaType = z.infer<typeof PlotConfigSchema>;
+export type FileUploadServiceParamType = z.infer<
+  typeof FileUploadServiceParamSchema
+>;
+export type FileUploadServiceResourceType = z.infer<
+  typeof FileUploadServiceResourceSchema
+>;
+export type NoSQLDbServiceResourceType = z.infer<
+  typeof NoSQLDbServiceResourceSchema
+>;
+export type NoSQLDbServiceParamType = z.infer<typeof NoSQLDbServiceParamSchema>;

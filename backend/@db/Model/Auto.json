@@ -1,1 +1,0 @@
-{"inputParams":[{"name":"a","values":[]},{"name":"b","values":[]}],"outputParams":[{"name":"c","values":[]}],"cardName":"Auto","cardDetail":"Model","streamRate":1,"switchedOn":true,"content":"def model(a, b):\r\n  c = a + b\r\n  return c","version":1}

@@ -35,14 +35,6 @@ export function adjustArraySize(arr: any[], size: number): any[] {
   }
 }
 
-export const logObject = (obj: any, message?: string) => {
-  if (message) {
-    console.log(message, JSON.stringify(obj, null, 2));
-    return;
-  }
-  console.log(JSON.stringify(obj, null, 2));
-};
-
 export const safeParse = <T>(
   ObjectSchema: Zod.Schema<T>,
   stringifiedObject: string

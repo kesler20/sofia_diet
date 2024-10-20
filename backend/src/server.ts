@@ -1,17 +1,10 @@
-import { FileIO } from "../src/models";
 import express, { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 import cors from "cors";
-import { CanvasSchema, SimulationResultsType } from "@lib/types";
-import { CardDetail, evaluateOutput } from "./modelExecutionEngine";
+import { NodeDataSchema, NodeDataType } from "@lib/types";
 import "./customLogger";
-import { logObject } from "@lib/utils";
-
-// Create a schema for the parameters
-const paramsSchema = z.object({
-  folder: z.string(),
-  filename: z.string().optional(),
-});
+import RedisDBAdapter from "./infrastructure/db/no_sql/redisNoSQLDbAdapter";
+import { safeParse } from "@lib/utils";
 
 // ---------------------- //
 //                        //
@@ -19,148 +12,110 @@ const paramsSchema = z.object({
 //                        //
 // ---------------------- //
 
+const noSQLDb = new RedisDBAdapter();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ---------------------------------------------------------------------------//
-//                                                                            //
-//      SPECIFIC CRUD FUNCTIONS TO EXPOSE THE FILE-SYSTEM TO THE FRONTEND     //
-//                                                                            //
-// ---------------------------------------------------------------------------//
+// -------------------------------------//
+//                                      //
+//     CRUD ENDPOINTS FOR RESOURCES     //
+//                                      //
+// -------------------------------------//
 
-export const resourceSchema = z.object({
-  resourceName: z.string(),
-  resourcePath: z.string(),
-  resourceContent: z.string(),
-});
-export type ResourceType = z.infer<typeof resourceSchema>;
-
-// Create endpoint
-app.post("/files", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { resourceName, resourcePath, resourceContent } = resourceSchema.parse(
-      req.body
-    );
-    const file = new FileIO(resourcePath);
-    await file.createFileAsync(resourceName, resourceContent);
-    res.status(201).json({ message: "File created successfully" });
-  } catch (error: any) {
-    next(error);
-  }
-});
-
-// Read endpoint
-app.get(
-  "/files/:folder/:filename",
+app.post(
+  "/resources/:topic",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const params = paramsSchema.parse(req.params);
-      const file = new FileIO(params.folder.replace(/__/g, " "));
-      const fileContent = await file.readFileAsync(
-        params.filename?.replace(/__/g, " ") as string
+      const { topic } = NoSQLDbServiceParamSchema.parse(req.params);
+      const { resourceName, resourceContent } = NoSQLDbServiceResourceSchema.parse(
+        req.body
       );
-      if (fileContent === undefined) {
-        res.status(404).json({ message: "File not found" });
+      const result = await noSQLDb.putResource(
+        topic,
+        resourceName,
+        safeParse<NodeDataType>(NodeDataSchema, resourceContent)
+      );
+      res.status(201).json(result);
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+app.get(
+  "/resources/:topic/:resourceName",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { topic, resourceName } = NoSQLDbServiceParamSchema.parse(req.params);
+      const resource = await noSQLDb.getResource(topic, resourceName as string);
+      if (resource) {
+        res.json(resource);
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+app.get(
+  "/resources/:topic",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { topic } = req.params;
+      const resources = await noSQLDb.getResources(topic);
+      res.json(resources);
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
+
+app.put(
+  "/resources/:topic/:resourceName",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { topic, resourceName } = req.params;
+      const { content } = req.body;
+
+      // check if the resource already exists.
+      const existingResource = await noSQLDb.getResource(topic, resourceName);
+
+      if (!existingResource) {
+        res.status(404).json({ message: "Resource not found" });
         return;
       }
-      res.json(JSON.parse(fileContent));
+
+      const parsedContent = safeParse<NodeDataType>(NodeDataSchema, content);
+
+      // if the name of the resource changes since it is used as the key in the database.
+      if (resourceName !== parsedContent.cardName) {
+        await noSQLDb.deleteResource(topic, resourceName);
+      }
+
+      const result = await noSQLDb.putResource(topic, resourceName, parsedContent);
+      res.json(result);
     } catch (error: any) {
       next(error);
     }
   }
 );
 
-// Read all files in a folder
-app.get(
-  "/files/:folder",
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { folder } = paramsSchema.parse(req.params);
-      const file = new FileIO(folder);
-      const filesInFolder = await file.readFilesAsync();
-      const fileContentInFolderPromises = filesInFolder.map((fileName) =>
-        file
-          .readFileAsync(fileName)
-          .then((content) => content && JSON.parse(content))
-      );
-      const fileContentInFolder = await Promise.all(fileContentInFolderPromises);
-      res.json(fileContentInFolder);
-    } catch (error: any) {
-      next(error);
-    }
-  }
-);
-
-// Update endpoint
-app.put("/files", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { resourceName, resourcePath, resourceContent } = resourceSchema.parse(
-      req.body
-    );
-    const file = new FileIO(resourcePath);
-    await file.updateFileAsync(resourceName, resourceContent);
-    res.status(200).json({ message: "File updated successfully" });
-  } catch (error: any) {
-    next(error);
-  }
-});
-
-// Delete endpoint
 app.delete(
-  "/files/:folder/:filename",
+  "/resources/:topic/:resourceName",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const params = paramsSchema.parse(req.params);
-      const file = new FileIO(params.folder);
-      await file.deleteFileAsync(params.filename as string);
-      res.status(200).json({ message: "File deleted successfully" });
+      const { topic, resourceName } = req.params;
+      const result = await noSQLDb.deleteResource(topic, resourceName);
+      res.json(result);
     } catch (error: any) {
       next(error);
     }
   }
 );
-
-//-------------------------//
-//                         //
-//     Simulation Routes   //
-//                         //
-//-------------------------//
-
-// Endpoint for creating a new file
-app.post("/simulation", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const parsedCanvas = CanvasSchema.parse(req.body);
-    console.info("Simulation request received", parsedCanvas);
-
-    const simulationResults: SimulationResultsType = {};
-    console.info("Executing models without cycles");
-
-    // Get all the output nodes.
-    const outputs = parsedCanvas.nodes.filter(
-      (node) => node.data.cardDetail === CardDetail.Output
-    );
-
-    // Create an array of promises to evaluate the output nodes.
-    const outputResultsPromises = outputs.map((output) =>
-      evaluateOutput(output, parsedCanvas)
-    );
-
-    // Wait for all the output nodes to be evaluated.
-    const outputResults = await Promise.all(outputResultsPromises);
-
-    // store the results in the simulation results object
-    outputResults.forEach((result, index) => {
-      simulationResults[outputs[index].data.cardName] = result;
-    });
-
-    logObject(simulationResults, "Simulation Results Generated");
-
-    res.status(201).json(simulationResults);
-  } catch (error: any) {
-    next(error);
-  }
-});
 
 // ---------------------- //
 //                        //
