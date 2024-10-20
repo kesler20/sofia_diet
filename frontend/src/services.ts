@@ -2,7 +2,6 @@ import DatabaseInterface from "./models/DatabaseInterface";
 import {
   NoSQLDbServiceResourceType,
 } from "@lib/types";
-import { CardDetail } from "./pages/data_stream_designer/DataStreamDesignerPage";
 
 const db = new DatabaseInterface();
 
@@ -19,7 +18,7 @@ export const createResourceInDb = async <TResponse>(
   resourceContent: string
 ) => {
   return db.CREATE<NoSQLDbServiceResourceType, TResponse>(
-    `resources/development_${resourcePath}`,
+    `resources/${resourcePath}`,
     {
       resourceName,
       resourceContent,
@@ -28,20 +27,15 @@ export const createResourceInDb = async <TResponse>(
 };
 
 export const readResourceInDb = async <TResponse>(resourcePath: string) => {
-  // connectors are always created and parsed to production
-  const environment =
-    resourcePath === CardDetail.Connector ? "production" : "development";
-  return db.READ<TResponse>(`resources/${environment}_${resourcePath}`);
+  return db.READ<TResponse>(`resources/${resourcePath}`);
 };
 
 export const readResourceByNameInDb = async <TResponse>(
   resourcePath: string,
   resourceName: string
 ) => {
-  const environment =
-    resourcePath === CardDetail.Connector ? "production" : "development";
   return db.READ<TResponse>(
-    `resources/${environment}_${resourcePath}/${resourceName}`
+    `resources/${resourcePath}/${resourceName}`
   );
 };
 

@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
-import { z } from "zod";
 import cors from "cors";
-import { NodeDataSchema, NodeDataType } from "@lib/types";
+import { NoSQLDbServiceParamSchema, NoSQLDbServiceResourceSchema } from "@lib/types";
 import "./customLogger";
 import RedisDBAdapter from "./infrastructure/db/no_sql/redisNoSQLDbAdapter";
 import { safeParse } from "@lib/utils";
@@ -35,7 +34,7 @@ app.post(
       const result = await noSQLDb.putResource(
         topic,
         resourceName,
-        safeParse<NodeDataType>(NodeDataSchema, resourceContent)
+        JSON.parse(resourceContent)
       );
       res.status(201).json(result);
     } catch (error: any) {
@@ -89,10 +88,10 @@ app.put(
         return;
       }
 
-      const parsedContent = safeParse<NodeDataType>(NodeDataSchema, content);
+      const parsedContent = JSON.parse(content);
 
       // if the name of the resource changes since it is used as the key in the database.
-      if (resourceName !== parsedContent.cardName) {
+      if (resourceName !== parsedContent.name) {
         await noSQLDb.deleteResource(topic, resourceName);
       }
 

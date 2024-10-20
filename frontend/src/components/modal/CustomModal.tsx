@@ -1,6 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { NodeDataType } from "../../../../lib/src/types";
 import React, { useState } from "react";
 import { MenuItem, Select } from "@mui/material";
 import { FaPlus } from "react-icons/fa";
