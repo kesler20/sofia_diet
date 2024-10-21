@@ -37,16 +37,10 @@ export default function NavbarComponent() {
         </div>
 
         {/* This is the title and the logo */}
-        <h1 className="text-lg font-bold site-title"> sofiaDiet</h1>
+        <h1 className="text-[30px] font-bold site-title"> sofiaDiet</h1>
 
         {/* This is the logo */}
-        <Link to={"./"}>
-          <img
-            src={Logo}
-            alt="site logo"
-            className="w-[59px] h-[53px] rounded-[20px] pt-2"
-          />
-        </Link>
+        <p>version 0.0.3</p>
       </div>
 
       {/* This is the links drop down */}

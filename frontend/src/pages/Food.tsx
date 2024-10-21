@@ -16,7 +16,8 @@ export default function Food() {
     vendor: "",
   });
   return (
-    <div className="overflow-x-hidden w-full pt-8 flex flex-col items-center justify-start text-[0.9rem]">
+    <div className="h-[80vh] overflow-x-hidden w-full pt-8 flex flex-col items-center justify-start text-[0.9rem]">
+      <div className="lg:h-[100px]"></div>
       <div className="relative">
         <div
           className={`

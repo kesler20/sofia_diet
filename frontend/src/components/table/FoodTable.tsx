@@ -20,27 +20,6 @@ export default function FoodTable(props: {
   return (
     <form className="w-full flex flex-col items-center justify-start">
       <div>
-        <div className="w-full mt-14 mb-4">
-          <SectionTitle title="Meal Name ?" />
-          <input
-            className={`
-              text-center
-              bg-transparent
-              text-black
-              w-1/2
-              ml-2`}
-            style={{
-              border: "none",
-              outline: "none",
-              borderBottom: "1px solid rgb(193, 197, 204)",
-            }}
-            title="write-topic"
-            type="text"
-            placeholder={mealName}
-            required
-            onChange={(e) => setMealName(e.target.value)}
-          />
-        </div>
         <Table>
           <tbody>
             <tr>

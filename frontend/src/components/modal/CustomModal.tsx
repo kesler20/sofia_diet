@@ -1,5 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import MainButton  from "../button/MainButton";
 
 export function SectionTitle(props: { title: string }) {
   return (
@@ -87,10 +87,7 @@ export default function CustomModal(props: {
         {props.body}
 
         {/* Submit Button */}
-        <button className="modal__card__btn--create mb-8" onClick={props.onSubmit}>
-          <p className="mr-2">Submit</p>
-          <FaArrowUpRightFromSquare size={"13"} />
-        </button>
+        <MainButton onSubmit={props.onSubmit} />
       </form>
     </div>
   );
