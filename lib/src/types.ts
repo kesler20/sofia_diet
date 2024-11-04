@@ -32,7 +32,7 @@ export const MealSchema = z.object({
   recipe: z.array(FoodSchema),
   tasteScore : z.number().optional(),
   image: z.string().optional(), // URL to the image.
-  totalFood: FoodSchema.optional(),
+  totalFood: FoodSchema,
 });
 
 export enum Weekday {
@@ -46,7 +46,6 @@ export enum Weekday {
 }
 
 export const DietSchema = z.object({
-  name: z.string(),
   weekday: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]),
   meals: z.array(MealSchema),
 });

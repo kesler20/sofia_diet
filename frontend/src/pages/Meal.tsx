@@ -27,9 +27,9 @@ export default function Meal() {
   const [meal, setMeal] = React.useState<MealType>({
     name: "Default Meal Name",
     recipe: [],
+    totalFood: defaultTotalFood,
   });
   const [foodsFromDb, setFoodsFromDb] = React.useState<FoodType[]>([]);
-  const [totalFood, setTotalFood] = React.useState<FoodType>(defaultTotalFood);
   const [createMealModalOpen, setCreateMealModalOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -50,20 +50,23 @@ export default function Meal() {
   }, []);
 
   React.useEffect(() => {
-    setTotalFood({ ...defaultTotalFood });
+    const totalFood = { ...defaultTotalFood };
 
     meal.recipe.forEach((food) => {
-      setTotalFood((prev) => {
+      setMeal((prev) => {
         return {
           ...prev,
-          calories: (prev.calories += food.calories),
-          protein: (prev.protein += food.protein),
-          carbs: (prev.carbs += food.carbs),
-          fat: (prev.fat += food.fat),
-          sodium: (prev.sodium += food.sodium),
-          sugar: (prev.sugar += food.sugar),
-          cost: (prev.cost += food.cost),
-          amount: (prev.amount += food.amount),
+          totalFood: {
+            ...prev.totalFood,
+            calories: (totalFood.calories += food.calories),
+            protein: (totalFood.protein += food.protein),
+            carbs: (totalFood.carbs += food.carbs),
+            fat: (totalFood.fat += food.fat),
+            sodium: (totalFood.sodium += food.sodium),
+            sugar: (totalFood.sugar += food.sugar),
+            cost: (totalFood.cost += food.cost),
+            amount: (totalFood.amount += food.amount),
+          },
         };
       });
     });
@@ -82,6 +85,7 @@ export default function Meal() {
         setMeal({
           name: "",
           recipe: [],
+          totalFood: defaultTotalFood,
         });
       }
     } catch (error) {
@@ -151,11 +155,14 @@ export default function Meal() {
           }}
           onDeleteFood={deleteFood}
           onChangeFoodAmount={updateFoodAmount}
-          totalFood={totalFood}
+          totalFood={meal.totalFood}
         />
       </div>
       <div className="w-full h-0 flex justify-center items-center">
-        <MainButton onSubmit={() => setCreateMealModalOpen(true)} text={"Create Meal"} />
+        <MainButton
+          onSubmit={() => setCreateMealModalOpen(true)}
+          text={"Create Meal"}
+        />
       </div>
       <CustomModal
         open={createMealModalOpen}
@@ -163,23 +170,25 @@ export default function Meal() {
           {
             name: "Meal Name",
             value: meal.name,
-            onChange: (e) => setMeal(prev => {
-              return {
-                ...prev,
-                name: e.target.value,
-              }
-            })
+            onChange: (e) =>
+              setMeal((prev) => {
+                return {
+                  ...prev,
+                  name: e.target.value,
+                };
+              }),
           },
           {
             name: "Enter Taste Score",
             value: meal.name,
-            onChange: (e) => setMeal(prev => {
-              return {
-                ...prev,
-                tasteScore: Number(e.target.value),
-              }
-            })
-          }, 
+            onChange: (e) =>
+              setMeal((prev) => {
+                return {
+                  ...prev,
+                  tasteScore: Number(e.target.value),
+                };
+              }),
+          },
         ]}
         body={
           <div className="mt-14 mb-4 flex flex-col items-center w-full justify-center">
