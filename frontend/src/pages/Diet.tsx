@@ -1,14 +1,27 @@
-import React, { useState, useEffect } from "react";
-import CustomizedSlider from "../components/slider/Slider";
+import React from "react";
 import MealTable from "../components/table/MealTable";
-import BasicSelect from "../components/select/Select";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { readResourceInDb } from "../services";
+import { MealType } from "@lib/types";
 
 export default function Diet() {
-  const [meals, setMeals] = useState([]);
-  const [weekDay, setWeekDay] = useState("");
-  const [mealsFromDB, setMealsFromDB] = useState([]);
-  const [rowToDelete, setRowToDelete] = useState([]);
+  const [mealsFromDB, setMealsFromDB] = React.useState<MealType[]>([]);
+
+  React.useEffect(() => {
+    const fetchMeals = async () => {
+      try {
+        const response = await readResourceInDb<MealType[]>("Meal");
+        if (response) {
+          setMealsFromDB(response);
+        }
+      } catch (error) {
+        alert("Failed to fetch meals");
+        console.error(error);
+      }
+    };
+
+    fetchMeals();
+  }, []);
 
   return (
     <div className="w-full justify-center items-center h-screen">
@@ -20,40 +33,6 @@ export default function Diet() {
         />
       </div>
       <div className="w-full flex justify-center items-center">
-        {/* <ModalButton
-          items={meals.map((ingredient, id) => {
-            if (id === 0) {
-              console.log(id);
-              return (
-                <div className="flex flex-col justify-center items-center">
-                  <div class="m-8">
-                    <BasicSelect onSelect={(e) => setWeekDay(e.target.value)} />
-                  </div>
-                  <CustomizedSlider
-                    key={id}
-                    name={`Amount of ${ingredient.name} (g)`}
-                    onChangeValue={handleChangeAmount}
-                    id={id}
-                  />
-                </div>
-              );
-            } else {
-              return (
-                <CustomizedSlider
-                  key={id}
-                  name={`Amount of ${ingredient.name} (g)`}
-                  onChangeValue={handleChangeAmount}
-                  id={id}
-                />
-              );
-            }
-          })}
-          buttonTitle={"Create Diet"}
-          modalButtonTitle={`Create Diet`}
-          data={{ weekDay, meals }} // pass in the meal object
-          onCreate={handleCreateDiet}
-        /> */}
-        {/* Submit Button */}
         <button className="modal__card__btn--create mb-8">
           <p className="mr-2">Get Diet</p>
           <FaArrowUpRightFromSquare size={"13"} />
