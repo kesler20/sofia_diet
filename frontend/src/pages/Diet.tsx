@@ -140,7 +140,7 @@ export default function Diet() {
 
   return (
     <div className="w-full justify-center items-center h-screen">
-      <div className="m-10">
+      <div className="m-10 w-full flex items-center justify-center">
         <CustomTabComponent
           tabNames={Array.from(Object.keys(diet))}
           customTabs={Array.from(Object.keys(diet)).map((weekday, index) => {
@@ -191,6 +191,7 @@ export default function Diet() {
               <th>Food Cost (£)</th>
             </tr>
             <tr>
+              <td>...</td>
               <td>{weekLongDailyAverage.protein}</td>
               <td>{weekLongDailyAverage.calories}</td>
               <td>{weekLongDailyAverage.cost}</td>

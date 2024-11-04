@@ -55,7 +55,7 @@ export const Panel = (props: {
   };
 
   return (
-    <Box sx={{ width: "100%", paddingTop: "40px" }}>
+    <Box sx={{ height: "100%", width: "100%", paddingTop: "40px" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           {props.propertyNames.map((propertyName, index) => {
@@ -81,7 +81,7 @@ export default function CustomTabComponent(props: {
   customTabs: React.ReactNode[];
 }) {
   return (
-    <div className="flex flex-col items-center justify-center bg-white rounded-2xl w-[450px] shadow-2xl p-10">
+    <div className="flex flex-col items-center justify-center bg-white rounded-2xl shadow-2xl p-10">
       <Panel
         properties={props.customTabs.map((customTab, index) => {
           return <PropertyTab key={index} children={customTab} />;
