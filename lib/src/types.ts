@@ -20,13 +20,6 @@ export const FoodSchema = z.object({
   vendor: z.string(),
 });
 
-export const RecipeSchema = z.object({
-  name: z.string(),
-  ingredients: z.array(FoodSchema),
-  notes: z.string(),
-  tasteScore : z.number(),
-});
-
 export enum MealsType {
   BREAKFAST = "breakfast",
   LUNCH = "lunch",
@@ -36,8 +29,9 @@ export enum MealsType {
 
 export const MealSchema = z.object({
   name: z.string(),
-  recipe: RecipeSchema,
-  type: z.enum(["breakfast", "lunch", "snack", "dinner"]),
+  recipe: z.array(FoodSchema),
+  tasteScore : z.number().optional(),
+  image: z.string().optional(), // URL to the image.
 });
 
 export enum Weekday {
@@ -80,7 +74,6 @@ export const NoSQLDbServiceParamSchema = z.object({
 // -------------------------//
 
 export type FoodType = z.infer<typeof FoodSchema>;
-export type RecipeType = z.infer<typeof RecipeSchema>;
 export type MealType = z.infer<typeof MealSchema>;
 export type DietType = z.infer<typeof DietSchema>;
 

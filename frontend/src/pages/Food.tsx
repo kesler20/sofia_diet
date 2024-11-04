@@ -1,6 +1,7 @@
 import { FoodType } from "@lib/types";
 import CustomModal from "../components/modal/CustomModal";
 import React from "react";
+import { createResourceInDb } from "../services";
 
 export default function Food() {
   const [food, setFood] = React.useState<FoodType>({
@@ -15,6 +16,25 @@ export default function Food() {
     amount: 0,
     vendor: "",
   });
+
+  const createFood = async () => {
+    try {
+      const response = await createResourceInDb<FoodType>(
+        "Food",
+        food.name,
+        JSON.stringify(food)
+      );
+
+      if (response) {
+        alert("Food created successfully");
+        window.location.reload();
+      }
+    } catch (error) {
+      alert("Failed to create food");
+      console.error(error);
+    }
+  };
+
   return (
     <div className="h-[80vh] overflow-x-hidden w-full pt-8 flex flex-col items-center justify-start text-[0.9rem]">
       <div className="lg:h-[100px]"></div>
@@ -31,57 +51,58 @@ export default function Food() {
         <CustomModal
           sections={[
             {
-              name: "Food",
+              name: "Food Name",
               value: food.name,
               onChange: (e) => setFood({ ...food, name: e.target.value }),
             },
             {
-              name: "Calories",
+              name: "Calories (Kcal)",
               value: food.calories,
-              onChange: (e) => setFood({ ...food, calories: Number(e.target.value) }),
+              onChange: (e) =>
+                setFood({ ...food, calories: Number(e.target.value) }),
             },
             {
-              name: "Protein",
+              name: "Protein (g)",
               value: food.protein,
               onChange: (e) => setFood({ ...food, protein: Number(e.target.value) }),
             },
             {
-              name: "Carbs",
+              name: "Carbs (g)",
               value: food.carbs,
               onChange: (e) => setFood({ ...food, carbs: Number(e.target.value) }),
             },
             {
-              name: "Fat",
+              name: "Fat (g)",
               value: food.fat,
               onChange: (e) => setFood({ ...food, fat: Number(e.target.value) }),
             },
             {
-              name: "Sodium",
+              name: "Sodium (g)",
               value: food.sodium,
               onChange: (e) => setFood({ ...food, sodium: Number(e.target.value) }),
             },
             {
-              name: "Sugar",
+              name: "Sugar (g)",
               value: food.sugar,
               onChange: (e) => setFood({ ...food, sugar: Number(e.target.value) }),
             },
             {
-              name: "Cost",
+              name: "Cost (£)",
               value: food.cost,
               onChange: (e) => setFood({ ...food, cost: Number(e.target.value) }),
             },
             {
-              name: "Amount",
+              name: "Amount (g)",
               value: food.amount,
               onChange: (e) => setFood({ ...food, amount: Number(e.target.value) }),
             },
             {
-              name: "Vendor",
+              name: "Vendor Name",
               value: food.vendor,
               onChange: (e) => setFood({ ...food, vendor: e.target.value }),
             },
           ]}
-          onSubmit={() => console.log(food)}
+          onSubmit={async () => await createFood()}
         />
       </div>
     </div>

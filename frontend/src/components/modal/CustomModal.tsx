@@ -1,5 +1,6 @@
 import { IoIosArrowForward } from "react-icons/io";
-import MainButton  from "../button/MainButton";
+import MainButton from "../button/MainButton";
+import BasicModal from "./BasicModal";
 
 export function SectionTitle(props: { title: string }) {
   return (
@@ -35,7 +36,7 @@ function SVGBackground() {
   );
 }
 
-export default function CustomModal(props: {
+function CustomModalComponent(props: {
   sections: {
     name: string;
     value: string | number;
@@ -60,7 +61,7 @@ export default function CustomModal(props: {
           {props.sections.map((section, index) => {
             return (
               <div className="mt-14" key={index}>
-                <SectionTitle title={`${section.name} Name ?`} />
+                <SectionTitle title={`${section.name} ?`} />
                 <input
                   className={`
               text-center
@@ -87,8 +88,37 @@ export default function CustomModal(props: {
         {props.body}
 
         {/* Submit Button */}
-        <MainButton onSubmit={props.onSubmit} />
+        <MainButton
+          onSubmit={(e) => {
+            e.preventDefault();
+            props.onSubmit(e);
+          }}
+        />
       </form>
     </div>
   );
+}
+
+export default function CustomModal(props: {
+  open: boolean;
+  handleClose: () => void;
+  sections: {
+    name: string;
+    value: string | number;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  }[];
+  body?: React.ReactNode;
+  onSubmit: (resource: any) => void;
+}) {
+  return (
+    <BasicModal
+      open={props.open}
+      customModal={<CustomModalComponent
+        sections={props.sections}
+        body={props.body}
+        onSubmit={props.onSubmit}
+      />}
+      handleClose={props.handleClose}
+    />
+  )
 }
