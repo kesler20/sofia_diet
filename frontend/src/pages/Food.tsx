@@ -1,7 +1,7 @@
-import { FoodType } from "@lib/types";
-import CustomModal from "../components/modal/CustomModal";
 import React from "react";
+import { FoodType } from "@lib/types";
 import { createResourceInDb } from "../services";
+import CustomForm from "../components/forms/CustomForm";
 
 export default function Food() {
   const [food, setFood] = React.useState<FoodType>({
@@ -48,7 +48,7 @@ export default function Food() {
             shadow-[20px_20px_20px_rgb(155,155,155)]
           `}
         />
-        <CustomModal
+        <CustomForm
           sections={[
             {
               name: "Food Name",

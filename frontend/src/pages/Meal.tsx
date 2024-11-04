@@ -7,7 +7,8 @@ import {
   readResourceInDb,
 } from "../services";
 import { FoodType, MealType } from "@lib/types";
-import CustomModal, { SectionTitle } from "../components/modal/CustomModal";
+import CustomModal from "../components/modal/CustomModal";
+import { SectionTitle } from "../components/forms/CustomForm";
 
 const defaultTotalFood: FoodType = {
   name: "Total Selected",
