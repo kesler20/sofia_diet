@@ -27,7 +27,7 @@ export default function Meal() {
   const [meal, setMeal] = React.useState<MealType>({
     name: "Default Meal Name",
     recipe: [],
-    totalFood: defaultTotalFood,
+    total: defaultTotalFood,
   });
   const [foodsFromDb, setFoodsFromDb] = React.useState<FoodType[]>([]);
   const [createMealModalOpen, setCreateMealModalOpen] = React.useState(false);
@@ -56,8 +56,8 @@ export default function Meal() {
       setMeal((prev) => {
         return {
           ...prev,
-          totalFood: {
-            ...prev.totalFood,
+          total: {
+            ...prev.total,
             calories: (totalFood.calories += food.calories),
             protein: (totalFood.protein += food.protein),
             carbs: (totalFood.carbs += food.carbs),
@@ -85,7 +85,7 @@ export default function Meal() {
         setMeal({
           name: "",
           recipe: [],
-          totalFood: defaultTotalFood,
+          total: defaultTotalFood,
         });
       }
     } catch (error) {
@@ -155,7 +155,7 @@ export default function Meal() {
           }}
           onDeleteFood={deleteFood}
           onChangeFoodAmount={updateFoodAmount}
-          totalFood={meal.totalFood}
+          totalFood={meal.total}
         />
       </div>
       <div className="w-full h-0 flex justify-center items-center">

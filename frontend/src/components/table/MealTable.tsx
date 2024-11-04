@@ -35,9 +35,9 @@ export default function MealTable(props: {
                     />
                   </td>
                   <td>{meal.image}</td>
-                  <td>{meal.totalFood.calories}</td>
-                  <td>{meal.totalFood.protein}</td>
-                  <td>{meal.totalFood.cost}</td>{" "}
+                  <td>{meal.total.calories}</td>
+                  <td>{meal.total.protein}</td>
+                  <td>{meal.total.cost}</td>{" "}
                   <td>
                     <RiDeleteBin6Line
                       onClick={() => props.onDeleteMeal(meal.name)}

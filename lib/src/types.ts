@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 // ----------------------------//
 //                             //
 //       SOFIA DIET TYPES      //
@@ -30,26 +29,22 @@ export enum MealsType {
 export const MealSchema = z.object({
   name: z.string(),
   recipe: z.array(FoodSchema),
-  tasteScore : z.number().optional(),
+  tasteScore: z.number().optional(),
   image: z.string().optional(), // URL to the image.
-  totalFood: FoodSchema,
+  total: FoodSchema,
 });
-
-export enum Weekday {
-  MONDAY = "monday",
-  TUESDAY = "tuesday",
-  WEDNESDAY = "wednesday",
-  THURSDAY = "thursday",
-  FRIDAY = "friday",
-  SATURDAY = "saturday",
-  SUNDAY = "sunday",
-}
 
 export const DietSchema = z.object({
-  weekday: z.enum(["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]),
-  meals: z.array(MealSchema),
+  monday: z.array(MealSchema),
+  tuesday: z.array(MealSchema),
+  wednesday: z.array(MealSchema),
+  thursday: z.array(MealSchema),
+  friday: z.array(MealSchema),
+  saturday: z.array(MealSchema),
+  sunday: z.array(MealSchema),
 });
 
+export type WeekdayType = keyof DietType;
 
 // ----------------------------//
 //                             //
@@ -58,7 +53,7 @@ export const DietSchema = z.object({
 // ----------------------------//
 
 export const NoSQLDbServiceResourceSchema = z.object({
-  resourceName: z.string(), 
+  resourceName: z.string(),
   resourceContent: z.string(),
 });
 
