@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./styles/index.css"
 
+
 export default function App() {
   return (
     <div className="min-h-screen w-full">
