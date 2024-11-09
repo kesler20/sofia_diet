@@ -44,7 +44,27 @@ export const DietSchema = z.object({
   sunday: z.array(MealSchema),
 });
 
-export type WeekdayType = keyof DietType;
+
+export const CategoryTypeSchema = z.enum(["income", "expense"]);
+
+export const BalanceSheetSchema = z.record(
+  z.object({
+    categories: z.array(
+      z.object({
+        name: z.string(),
+        type: CategoryTypeSchema,
+        sections: z.array(
+          z.object({
+            name: z.string(),
+            value: z.number(),
+          })
+        ),
+      })
+    ),
+    totalIn: z.number(),
+    totalOut: z.number(),
+  })
+);
 
 // ----------------------------//
 //                             //
@@ -76,3 +96,4 @@ export type NoSQLDbServiceResourceType = z.infer<
   typeof NoSQLDbServiceResourceSchema
 >;
 export type NoSQLDbServiceParamType = z.infer<typeof NoSQLDbServiceParamSchema>;
+export type BalanceSheetType = z.infer<typeof BalanceSheetSchema>;
