@@ -214,14 +214,14 @@ export default function Diet() {
         </div>
       </div>
 
-      <div className="mt-4 w-full flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         {/* download diet as an excel file and the shopping list */}
-        <button className="modal__card__btn--create mb-8">
+        <button className="modal__card__btn--create mb-8 mr-8">
           <p className="mr-2">Get Diet</p>
           <FaArrowUpRightFromSquare size={"13"} />
         </button>
         <button className="modal__card__btn--create mb-8">
-          <p className="mr-2">Create Shopping List</p>
+          <p className="mr-2">Get Shopping List</p>
           <FaArrowUpRightFromSquare size={"13"} />
         </button>
       </div>
