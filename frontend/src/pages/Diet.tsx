@@ -7,8 +7,8 @@ import {
   readResourceInDb,
 } from "../services";
 import { DietType, FoodType, MealType, WeekdayType } from "@lib/types";
-import CustomTabComponent from "../components/tabs/CustomTabComponent";
 import { Table } from "../components/table/Table";
+import { MenuItem, Select } from "@mui/material";
 
 export default function Diet() {
   const [diet, setDiet] = React.useState<DietType>({
@@ -33,6 +33,7 @@ export default function Diet() {
     amount: 0,
     vendor: "",
   });
+  const [currentWeekday, setCurrentWeekday] = React.useState<WeekdayType>("monday");
 
   React.useEffect(() => {
     const fetchDiet = async () => {
@@ -139,65 +140,78 @@ export default function Diet() {
   };
 
   return (
-    <div className="w-full justify-center items-center h-screen">
-      <div className="m-10 w-full flex items-center justify-center">
-        <CustomTabComponent
-          tabNames={Array.from(Object.keys(diet))}
-          customTabs={Array.from(Object.keys(diet)).map((weekday, index) => {
-            const currentWeekday: WeekdayType = weekday as WeekdayType;
-            return (
-              <MealTable
-                key={index}
-                meals={mealsFromDB}
-                selectedMeals={diet[currentWeekday].map((meal) => meal.name)}
-                onDeleteMeal={async (mealName) => {
-                  await deleteMeal(mealName);
-                }}
-                toggleMealSelection={(mealName) => {
-                  if (diet[currentWeekday].find((meal) => meal.name === mealName)) {
-                    setDiet((prev) => {
-                      return {
-                        ...prev,
-                        [currentWeekday]: prev[currentWeekday].filter(
-                          (meal) => meal.name !== mealName
-                        ),
-                      };
-                    });
-                  } else {
-                    setDiet((prev) => {
-                      return {
-                        ...prev,
-                        [currentWeekday]: [
-                          ...prev[currentWeekday],
-                          mealsFromDB.find((meal) => meal.name === mealName),
-                        ],
-                      };
-                    });
-                  }
-                }}
-              />
-            );
-          })}
-        />
+    <div className="w-full flex flex-col justify-center items-center min-h-screen">
+      <div className="w-full flex items-center justify-center">
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={currentWeekday}
+          label="Weekday"
+          onChange={(e) => setCurrentWeekday(e.target.value as WeekdayType)}
+        >
+          <MenuItem value="monday">Monday</MenuItem>
+          <MenuItem value="tuesday">Tuesday</MenuItem>
+          <MenuItem value="wednesday">Wednesday</MenuItem>
+          <MenuItem value="thursday">Thursday</MenuItem>
+          <MenuItem value="friday">Friday</MenuItem>
+          <MenuItem value="saturday">Saturday</MenuItem>
+          <MenuItem value="sunday">Sunday</MenuItem>
+        </Select>
       </div>
 
-      <div className="mt-4">
-        <Table>
-          <tbody>
-            <tr>
-              <th>Week Long Daily Average</th>
-              <th>Food Protein (g)</th>
-              <th>Food Calories (Kcal)</th>
-              <th>Food Cost (£)</th>
-            </tr>
-            <tr>
-              <td>...</td>
-              <td>{weekLongDailyAverage.protein}</td>
-              <td>{weekLongDailyAverage.calories}</td>
-              <td>{weekLongDailyAverage.cost}</td>
-            </tr>
-          </tbody>
-        </Table>
+      <div className="my-10 w-full flex items-center justify-center">
+        <div className="min-w-64">
+          <MealTable
+            meals={mealsFromDB}
+            selectedMeals={diet[currentWeekday].map((meal) => meal.name)}
+            onDeleteMeal={async (mealName) => {
+              await deleteMeal(mealName);
+            }}
+            toggleMealSelection={(mealName) => {
+              if (diet[currentWeekday].find((meal) => meal.name === mealName)) {
+                setDiet((prev) => {
+                  return {
+                    ...prev,
+                    [currentWeekday]: prev[currentWeekday].filter(
+                      (meal) => meal.name !== mealName
+                    ),
+                  };
+                });
+              } else {
+                setDiet((prev) => {
+                  return {
+                    ...prev,
+                    [currentWeekday]: [
+                      ...prev[currentWeekday],
+                      mealsFromDB.find((meal) => meal.name === mealName),
+                    ],
+                  };
+                });
+              }
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="min-w-[400px] flex items-center justify-center bg-black">
+        <div className="w-full">
+          <Table>
+            <tbody>
+              <tr>
+                <th>Week Long Daily Average</th>
+                <th>Food Protein (g)</th>
+                <th>Food Calories (Kcal)</th>
+                <th>Food Cost (£)</th>
+              </tr>
+              <tr>
+                <td>...</td>
+                <td>{weekLongDailyAverage.protein}</td>
+                <td>{weekLongDailyAverage.calories}</td>
+                <td>{weekLongDailyAverage.cost}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
       </div>
 
       <div className="mt-4 w-full flex justify-center items-center">
