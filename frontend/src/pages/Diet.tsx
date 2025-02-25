@@ -4,11 +4,17 @@ import { MenuItem, Select } from "@mui/material";
 import { createResourceInDb, readResourceInDb } from "../services";
 import { DietType, DishType } from "@lib/types";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
-import { SectionTitle } from "../components/forms/CustomForm";
 
-function Card(props: { className?: string; children?: React.ReactNode }) {
+function Card(props: {
+  className?: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
+  style?: any;
+}) {
   return (
     <div
+      style={props.style}
+      onClick={props.onClick}
       className={`
     border border-gray-200 rounded-2xl shadow-md
     px-4
@@ -84,6 +90,7 @@ export default function Diet() {
     protein: 0,
     cost: 0,
   });
+  const [selectedFoods, setSelectedFoods] = React.useState<DishType[]>([]);
 
   React.useEffect(() => {
     calculateTotal();
@@ -101,6 +108,32 @@ export default function Diet() {
       saveDietPlan();
     }
   }, [dietPlan]);
+
+  const copySelectedFoodsToClipboard = () => {
+    const text = selectedFoods.map((food) => food.name).join(", ");
+    navigator.clipboard.writeText(text);
+    alert("Copied to clipboard");
+  };
+
+  const pasteSelectedFoodsFromClipboard = async () => {
+    const text = await navigator.clipboard.readText();
+    const foodNamesCopiedToClipboard = text.split(", ");
+    setDietPlan((prev: DietType) => {
+      return {
+        ...prev,
+        [currentDay]: [
+          ...prev[currentDay],
+          ...foodNamesCopiedToClipboard.map((foodName) => {
+            if (prev[currentDay].some((item) => item.name === foodName)) {
+              return;
+            }
+
+            return foodsFromDb.find((f) => f.name === foodName);
+          }),
+        ],
+      };
+    });
+  };
 
   const getFoods = async () => {
     const foods = await readResourceInDb<DishType>("Dish");
@@ -186,6 +219,16 @@ export default function Diet() {
     });
   };
 
+  const addFoodToSelected = (food: DishType) => {
+    setSelectedFoods((prev) => {
+      if (prev.some((item) => item.name === food.name)) {
+        return prev.filter((item) => item.name !== food.name);
+      } else {
+        return [...prev, food];
+      }
+    });
+  };
+
   return (
     <div className="w-full flex flex-col items-center justify-start h-screen">
       {/* Main Card */}
@@ -219,7 +262,15 @@ export default function Diet() {
         <div className="w-full max-h-[400px] my-8 flex flex-col justify-center overflow-y-scroll custom-scrollbar overflow-x-hidden">
           {dietPlan[currentDay].map((food: DishType) => {
             return (
-              <Card className="text-gray-500 p-2 pl-8">
+              <Card
+                className="text-gray-500 p-2 pl-8 hover:glow"
+                onClick={() => addFoodToSelected(food)}
+                style={{
+                  borderColor: selectedFoods.some((item) => item.name === food.name)
+                    ? "#fdf3f8"
+                    : "white",
+                }}
+              >
                 <div className="w-full flex justify-between">
                   <p className="text-gray-600 font-bold">{food.name}</p>
                   <IoIosRemove

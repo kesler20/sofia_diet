@@ -2,7 +2,7 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Meal from "./Dishes";
 import Dish from "./Dish";
-import Diet from "./Plan";
+import Diet from "./Diet";
 
 export type PageMetaData = {
   name: string;
