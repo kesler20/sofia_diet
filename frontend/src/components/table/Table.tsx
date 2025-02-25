@@ -5,8 +5,8 @@ export const Table = styled.table`
   width: 100%;
 
   th {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     text-align: left;
     background-color: #9050cc;
     color: white;

@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import Logo from "../../assets/Logo.png";
 import styled from "styled-components";
 import { useStoredValue } from "../../customHooks";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -17,7 +16,7 @@ export default function NavbarComponent() {
 
   return (
     // The first line contains the seperation between the navbar and the links drop down
-    <div className="flex flex-col items-center justify-center w-full h-24">
+    <div className="flex flex-col items-center justify-center w-full mb-8 h-24">
       {/* The second line contains the logo, title and the hamburger menu */}
       <div className="w-full flex items-center justify-evenly">
         {/* This is the hamburger menu */}

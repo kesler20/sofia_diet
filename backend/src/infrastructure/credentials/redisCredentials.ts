@@ -1,7 +1,7 @@
 export default {
-  password: "B8HckBBIYBEGyXSwvx3Bw1FTzxqCICqO",
+  password: "mxrnDwiVJGR6y2VfPP5WEOVcDYXjQxby",
   socket: {
-    host: "redis-15304.c338.eu-west-2-1.ec2.redns.redis-cloud.com",
-    port: 15304,
+    host: "redis-11672.c338.eu-west-2-1.ec2.redns.redis-cloud.com",
+    port: 11672,
   },
 };
