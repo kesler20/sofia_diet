@@ -109,6 +109,17 @@ export default function Diet() {
     }
   }, [dietPlan]);
 
+  // listen to the copy and paste events
+  React.useEffect(() => {
+    document.addEventListener("copy", copySelectedFoodsToClipboard);
+    document.addEventListener("paste", pasteSelectedFoodsFromClipboard);
+
+    return () => {
+      document.removeEventListener("copy", copySelectedFoodsToClipboard);
+      document.removeEventListener("paste", pasteSelectedFoodsFromClipboard);
+    };
+  }, [selectedFoods]);
+
   const copySelectedFoodsToClipboard = () => {
     const text = selectedFoods.map((food) => food.name).join(", ");
     navigator.clipboard.writeText(text);
@@ -219,7 +230,7 @@ export default function Diet() {
     });
   };
 
-  const addFoodToSelected = (food: DishType) => {
+  const toggleFoodSelection = (food: DishType) => {
     setSelectedFoods((prev) => {
       if (prev.some((item) => item.name === food.name)) {
         return prev.filter((item) => item.name !== food.name);
@@ -264,7 +275,7 @@ export default function Diet() {
             return (
               <Card
                 className="text-gray-500 p-2 pl-8 hover:glow"
-                onClick={() => addFoodToSelected(food)}
+                onClick={() => toggleFoodSelection(food)}
                 style={{
                   borderColor: selectedFoods.some((item) => item.name === food.name)
                     ? "#fdf3f8"
