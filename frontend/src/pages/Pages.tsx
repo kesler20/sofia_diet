@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import Meal from "./Meal";
-import Food from "./Food";
-import Diet from "./Diet";
+import Meal from "./Dishes";
+import Dish from "./Dish";
+import Diet from "./Plan";
 
 export type PageMetaData = {
   name: string;
@@ -15,19 +15,19 @@ export type PageMetaData = {
  */
 export const pages: PageMetaData[] = [
   {
-    name: "Diets",
+    name: "Plan Diet",
     link: "/diet",
     pageComponent: <Diet />,
   },
   {
-    name: "Meals",
-    link: "/meal",
+    name: "Edit Dishes",
+    link: "/dishes",
     pageComponent: <Meal />,
   },
   {
-    name: "Foods",
+    name: "Add Dish",
     link: "/",
-    pageComponent: <Food />,
+    pageComponent: <Dish />,
   },
 ];
 

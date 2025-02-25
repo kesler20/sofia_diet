@@ -6,45 +6,26 @@ import { z } from "zod";
 //                             //
 // ----------------------------//
 
-export const FoodSchema = z.object({
+export const DishSchema = z.object({
   name: z.string(),
   calories: z.number(),
   protein: z.number(),
-  carbs: z.number(),
-  fat: z.number(),
-  sodium: z.number(),
-  sugar: z.number(),
   cost: z.number(),
   amount: z.number(),
   vendor: z.string(),
 });
 
-export enum MealsType {
-  BREAKFAST = "breakfast",
-  LUNCH = "lunch",
-  SNACK = "snack",
-  DINNER = "dinner",
-}
-
-export const MealSchema = z.object({
-  name: z.string(),
-  recipe: z.array(FoodSchema),
-  tasteScore: z.number().optional(),
-  image: z.string().optional(), // URL to the image.
-  total: FoodSchema,
-});
+export type DishAttributeType = keyof z.infer<typeof DishSchema>;
 
 export const DietSchema = z.object({
-  monday: z.array(MealSchema),
-  tuesday: z.array(MealSchema),
-  wednesday: z.array(MealSchema),
-  thursday: z.array(MealSchema),
-  friday: z.array(MealSchema),
-  saturday: z.array(MealSchema),
-  sunday: z.array(MealSchema),
+  Monday: z.array(DishSchema),
+  Tuesday: z.array(DishSchema),
+  Wednesday: z.array(DishSchema),
+  Thursday: z.array(DishSchema),
+  Friday: z.array(DishSchema),
+  Saturday: z.array(DishSchema),
+  Sunday: z.array(DishSchema),
 });
-
-export type WeekdayType = keyof DietType;
 
 // ----------------------------//
 //                             //
@@ -68,10 +49,8 @@ export const NoSQLDbServiceParamSchema = z.object({
 //                          //
 // -------------------------//
 
-export type FoodType = z.infer<typeof FoodSchema>;
-export type MealType = z.infer<typeof MealSchema>;
+export type DishType = z.infer<typeof DishSchema>;
 export type DietType = z.infer<typeof DietSchema>;
-
 export type NoSQLDbServiceResourceType = z.infer<
   typeof NoSQLDbServiceResourceSchema
 >;
