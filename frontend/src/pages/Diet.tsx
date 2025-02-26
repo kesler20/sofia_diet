@@ -2,7 +2,7 @@ import React from "react";
 import CustomModal from "../components/modal/CustomModal";
 import { MenuItem, Select } from "@mui/material";
 import { createResourceInDb, readResourceInDb } from "../services";
-import { DietType, DishType } from "@lib/types";
+import { DietType, DishType, WeekdayType } from "@lib/types";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 
 function Card(props: {
@@ -147,7 +147,7 @@ export default function Diet() {
   };
 
   const getFoods = async () => {
-    const foods = await readResourceInDb<DishType>("Dish");
+    const foods = await readResourceInDb<DishType[]>("Dish");
 
     if (!foods) {
       return;
@@ -161,7 +161,7 @@ export default function Diet() {
     if (!dietPlan) {
       return;
     }
-    setDietPlan(dietPlan[0]);
+    setDietPlan(dietPlan);
   };
 
   const calculateTotal = () => {
@@ -184,7 +184,7 @@ export default function Diet() {
       cost: 0,
     };
     Object.keys(dietPlan).forEach((day) => {
-      dietPlan[day].forEach((food: DishType) => {
+      dietPlan[day as WeekdayType].forEach((food: DishType) => {
         weekTotal.calories += food.calories;
         weekTotal.protein += food.protein;
         weekTotal.cost += food.cost;

@@ -3,7 +3,7 @@ import {
   NoSQLDbServiceResourceType,
 } from "@lib/types";
 
-const db = new DatabaseInterface();
+const db = new DatabaseInterface("https://tsbackend-production.up.railway.app");
 
 //================================================================================//
 //                                                                                //

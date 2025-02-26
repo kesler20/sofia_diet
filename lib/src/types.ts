@@ -27,6 +27,8 @@ export const DietSchema = z.object({
   Sunday: z.array(DishSchema),
 });
 
+export type WeekdayType = keyof z.infer<typeof DietSchema>;
+
 // ----------------------------//
 //                             //
 //       HTTP MESSAGE TYPES    //
