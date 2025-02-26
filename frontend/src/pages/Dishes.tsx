@@ -16,7 +16,7 @@ export default function Meal() {
 
   React.useEffect(() => {
     const getFoods = async () => {
-      const foods = await readResourceInDb<DishType>("Dish");
+      const foods = await readResourceInDb<DishType[]>("Dish");
 
       if (!foods) {
         return;
@@ -50,7 +50,7 @@ export default function Meal() {
       return;
     }
 
-    foodToUpdate[foodAttribute] = value;
+    (foodToUpdate[foodAttribute as keyof DishType] as typeof value) = value;
 
     setFoodsFromDb(
       foodsFromDb.map((food) => {
@@ -84,7 +84,7 @@ export default function Meal() {
 
   return (
     <div className="w-full flex flex-col justify-start items-center h-screen">
-      <div className="min-w-[300px] w-[60%] overflow-x-scroll">
+      <div className="min-w-[300px] w-[60%] max-w-[1100px] overflow-x-scroll">
         <DishesTable
           dishes={foodsFromDb}
           onDeleteFood={deleteFood}

@@ -43,6 +43,7 @@ export default function CustomForm(props: {
   }[];
   body?: React.ReactNode;
   onSubmit: (resource: any) => void;
+  longer?: boolean;
 }) {
   return (
     <div
@@ -56,7 +57,9 @@ export default function CustomForm(props: {
       <SVGBackground />
       <form className="flex items-center justify-center flex-col h-full">
         {/* Get Card Name */}
-        <div className="hidden-scrollbar overflow-y-scroll pb-8">
+        <div className="hidden-scrollbar overflow-y-scroll h-[150px] pb-8" style={{
+          height: props.longer ? "250px" : "150px",
+        }}>
           {props.sections.map((section, index) => {
             return (
               <div className="mt-14" key={index}>

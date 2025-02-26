@@ -156,12 +156,12 @@ export default function Diet() {
   };
 
   const getDietPlan = async () => {
-    const dietPlan = await readResourceInDb<DietType>("Diet");
+    const dietPlan = await readResourceInDb<DietType[]>("Diet");
 
     if (!dietPlan) {
       return;
     }
-    setDietPlan(dietPlan);
+    setDietPlan(dietPlan[0]);
   };
 
   const calculateTotal = () => {
@@ -243,7 +243,7 @@ export default function Diet() {
   return (
     <div className="w-full flex flex-col items-center justify-start h-screen">
       {/* Main Card */}
-      <Card className="min-w-[300px] w-[70%] mt-4 bg-white p-2">
+      <Card className="min-w-[300px] w-1/2 max-w-[900px] mt-4 bg-white p-2">
         {/* Card Header with the button and the Dropdown */}
         <div className="w-full flex justify-evenly items-center">
           <CardTitle
@@ -311,7 +311,7 @@ export default function Diet() {
       </Card>
 
       {/* Weekly Total */}
-      <Card className="min-w-[300px] w-[70%] mt-4 bg-white p-2">
+      <Card className="min-w-[300px] w-1/2 max-w-[900px] mt-4 bg-white p-2">
         <p className="text-gray-600 font-bold">Weekly Total:</p>
         <div className="flex md:flex-row flex-col w-full justify-evenly">
           <p>Calories: {weeklyTotal.calories} (kcal)</p>

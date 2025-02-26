@@ -78,6 +78,7 @@ export default function Dish() {
               onChange: (e) => setFood({ ...dish, vendor: e.target.value }),
             },
           ]}
+          longer={true}
           onSubmit={async () => await createDish()}
         />
       </div>
