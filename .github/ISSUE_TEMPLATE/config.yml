@@ -1,5 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: Link to the Solved Issue Log.
-    url: https://publish.obsidian.md/standard-operating-protocols/Software/Solved%20Issues%201
-    about: Ensure that you consult the Solved Issue Log before submitting a new issue, to ensure that this is not a quick fix.

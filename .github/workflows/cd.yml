@@ -1,4 +1,4 @@
-name: Release Node.js App on Version Tag
+name: Release Application on Version Tag
 
 on:
   push:
@@ -13,11 +13,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Necessary to fetch all history for tags
-
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
 
       - name: Generate Release Notes
         id: generate_release_notes
@@ -34,7 +29,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.PROJECTS_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
           
         with:
           tag_name: ${{ github.ref }}
