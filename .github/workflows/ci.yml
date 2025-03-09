@@ -13,19 +13,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Move to the project directory
-        run: cd frontend
 
       - name: Install PNPM
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: cd frontend && pnpm install
 
       - name: Run Type Checking
-        run: pnpm run type-check
+        run: cd frontend && pnpm run type-check
 
       - name: Run Build
-        run: pnpm run build
-  
-
+        run: cd frontend && pnpm run build
