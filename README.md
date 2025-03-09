@@ -112,8 +112,6 @@ Include any design diagram used to inform the development of the software featur
 mentioned. This can include, diagrams from UX workflows, UI mockups and wireframes,
 Xstate diagrams, draw UML and draw SQL diagrams etc...
 
-![alt text](assets/xstate-diagram.png)
-
 # Folder Structure and Conventions
 
 > Here are the folder structure description and some of the conventions used in the
