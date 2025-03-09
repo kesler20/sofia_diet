@@ -5,6 +5,7 @@ import "./styles/index.css";
 import Auth0ProviderWithHistory from "./Auth0Provider";
 
 export default function App() {
+  
   return (
     <div className="min-h-screen w-full">
       <BrowserRouter>

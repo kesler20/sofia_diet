@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useStoredValue } from "../../customHooks";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { pages } from "../../pages/Pages";
+import { useAuth0 } from "@auth0/auth0-react";
+import React from "react";
+import { IoMdLogOut } from "react-icons/io";
 
 const Link = styled(NavLink)`
   text-decoration: none;
@@ -12,7 +15,14 @@ const Link = styled(NavLink)`
 `;
 
 export default function NavbarComponent() {
+  const { logout, user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
   const [open, setOpen] = useStoredValue(true, "navbar/state");
+
+  React.useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, isLoading, loginWithRedirect]);
 
   return (
     // The first line contains the seperation between the navbar and the links drop down
@@ -36,10 +46,13 @@ export default function NavbarComponent() {
         </div>
 
         {/* This is the title and the logo */}
-        <h1 className="text-[30px] font-bold site-title"> sofiaDiet</h1>
+        <h1 className="text-[30px] font-bold site-title md:ml-20">sofiaDiet</h1>
 
-        {/* This is the logo */}
-        <p>version 0.0.3</p>
+        {/* This is the user profile */}
+        <div className="flex items-center justify-center">
+          <p className="hidden md:block text-gray-400 mr-2">Hi {user?.name} ✨</p>
+          <IoMdLogOut className="text-gray-400" onClick={() => logout()} />
+        </div>
       </div>
 
       {/* This is the links drop down */}
