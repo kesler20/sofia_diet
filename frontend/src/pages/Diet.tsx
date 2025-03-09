@@ -135,7 +135,7 @@ export default function Diet() {
         [currentDay]: [
           ...prev[currentDay],
           ...foodNamesCopiedToClipboard.map((foodName) => {
-            if (prev[currentDay].some((item) => item.name === foodName)) {
+            if (prev[currentDay].some((item: DishType) => item.name === foodName)) {
               return;
             }
 

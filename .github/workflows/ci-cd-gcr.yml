@@ -15,6 +15,9 @@ jobs:
       - name: Install PNPM
         run: npm install -g pnpm
 
+      - name: Install library dependencies
+        run: cd lib && pnpm install
+
       - name: Install dependencies
         run: cd frontend && pnpm install
 
@@ -28,6 +31,12 @@ jobs:
 
       - name: Install PNPM
         run: npm install -g pnpm
+
+      - name: Install library dependencies
+        run: cd lib && pnpm install
+
+      - name: Run Type Checking
+        run: cd lib && pnpm run type-check
 
       - name: Install dependencies
         run: cd frontend && pnpm install
