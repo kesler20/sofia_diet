@@ -51,7 +51,7 @@ export default function NavbarComponent() {
         {/* This is the user profile */}
         <div className="flex items-center justify-center">
           <p className="hidden md:block text-gray-400 mr-2">Hi {user?.name} ✨</p>
-          <IoMdLogOut className="text-gray-400" onClick={() => logout()} />
+          <IoMdLogOut className="text-gray-400 cursor-pointer" onClick={() => logout()} />
         </div>
       </div>
 
