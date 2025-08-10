@@ -1,9 +1,6 @@
-![Logo](assets/image.png)
+![Logo](docs/image.png)
 
-> An app for planning diets on a budget that works really well with any food tracking
-> app
-
-https://sofiadiet-production.up.railway.app
+> An app for planning diets on a budget that works really well with any food tracking app. This is deployed [here](https://kesler20.github.io/sofia_diet/).
 
 ---
 
