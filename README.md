@@ -23,9 +23,11 @@
 
 ## Software Features
 
-Include any design diagram used to inform the development of the software features
-mentioned. This can include, diagrams from UX workflows, UI mockups and wireframes,
-Xstate diagrams, draw UML and draw SQL diagrams etc...
+- **Authentication**: Secure user authentication using Auth0.
+- **Diet Planning**: Create and manage diet plans based on personal preferences and budget.
+- **Food Tracking**: Integrates with food tracking apps to monitor daily intake.
+- **Dish Tracking**: Track dishes and their nutritional values.
 
 # Architectural Overview & Abstractions
 
+![Architecture Diagram](docs/drawSQL-image-export-2025-08-10.png)
