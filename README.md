@@ -29,5 +29,3 @@ Xstate diagrams, draw UML and draw SQL diagrams etc...
 
 # Architectural Overview & Abstractions
 
-> Here are the folder structure description and some of the conventions used in the
-> repository
