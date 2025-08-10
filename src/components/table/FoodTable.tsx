@@ -1,6 +1,6 @@
 import { Table } from "./Table";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { DishAttributeType, DishType } from "../types";
+import { DishAttributeType, DishType } from "../../types";
 
 export default function DishesTable(props: {
   dishes: DishType[];
