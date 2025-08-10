@@ -1,9 +1,9 @@
 import React from "react";
 import CustomModal from "../components/modal/CustomModal";
 import { MenuItem, Select } from "@mui/material";
-import { createResourceInDb, readResourceInDb } from "../services";
-import { DietType, DishType, WeekdayType } from "@lib/types";
+import { DietType, DishType, WeekdayType } from "../types";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
+import { readResourceInCache, createResourceInCache } from "../customHooks";
 
 function Card(props: {
   className?: string;
@@ -64,21 +64,12 @@ const defaultDietPlan: DietType = {
   Sunday: [],
 };
 
-type WeekDayType =
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday"
-  | "Friday"
-  | "Saturday"
-  | "Sunday";
-
 type DietData = { calories: number; protein: number; cost: number };
 
 export default function Diet() {
   const [selectDishModalOpen, setSelectDishModalOpen] = React.useState(false);
   const [dietPlan, setDietPlan] = React.useState<DietType>(defaultDietPlan);
-  const [currentDay, setCurrentDay] = React.useState<WeekDayType>("Monday");
+  const [currentDay, setCurrentDay] = React.useState<WeekdayType>("Monday");
   const [foodsFromDb, setFoodsFromDb] = React.useState<DishType[]>([]);
   const [currentDayTotal, setCurrentDayTotal] = React.useState<DietData>({
     calories: 0,
@@ -121,7 +112,7 @@ export default function Diet() {
   }, [selectedFoods]);
 
   const copySelectedFoodsToClipboard = () => {
-    const text = selectedFoods.map((food) => food.name).join(", ");
+    const text = selectedFoods.map((food: DishType) => food.name).join(", ");
     navigator.clipboard.writeText(text);
     alert("Copied to clipboard");
   };
@@ -133,21 +124,25 @@ export default function Diet() {
       return {
         ...prev,
         [currentDay]: [
-          ...prev[currentDay],
+          ...prev[currentDay as WeekdayType],
           ...foodNamesCopiedToClipboard.map((foodName) => {
-            if (prev[currentDay].some((item: DishType) => item.name === foodName)) {
+            if (
+              prev[currentDay as WeekdayType].some(
+                (item: DishType) => item.name === foodName
+              )
+            ) {
               return;
             }
 
-            return foodsFromDb.find((f) => f.name === foodName);
+            return foodsFromDb.find((f: DishType) => f.name === foodName);
           }),
-        ],
-      };
+        ].filter(Boolean) as DishType[],
+      } as DietType;
     });
   };
 
-  const getFoods = async () => {
-    const foods = await readResourceInDb<DishType[]>("Dish");
+  const getFoods = () => {
+    const foods = readResourceInCache<DishType>("Dish");
 
     if (!foods) {
       return;
@@ -155,13 +150,13 @@ export default function Diet() {
     setFoodsFromDb(foods);
   };
 
-  const getDietPlan = async () => {
-    const dietPlan = await readResourceInDb<DietType[]>("Diet");
+  const getDietPlan = () => {
+    const dietPlanArr = readResourceInCache<DietType>("Diet");
 
-    if (!dietPlan) {
+    if (!dietPlanArr || dietPlanArr.length === 0) {
       return;
     }
-    setDietPlan(dietPlan[0]);
+    setDietPlan(dietPlanArr[0]);
   };
 
   const calculateTotal = () => {
@@ -193,29 +188,29 @@ export default function Diet() {
     setWeeklyTotal(weekTotal);
   };
 
-  const saveDietPlan = async () => {
-    // Save the diet plan to the database
-    const response = await createResourceInDb<DietType>(
-      "Diet",
-      "username",
-      JSON.stringify(dietPlan)
-    );
-
-    if (!response) {
+  const saveDietPlan = () => {
+    // Save the diet plan to the localStorage collection "Diet" as a single-item array
+    try {
+      createResourceInCache<DietType>("Diet", dietPlan);
+    } catch (error) {
       alert("Failed to save diet plan");
-      console.log("Failed to save diet plan");
+      console.log("Failed to save diet plan", error);
     }
   };
 
   const addFoodToDiet = (food: DishType) => {
     setDietPlan((prev: DietType) => {
-      if (prev[currentDay].some((item: DishType) => item.name === food.name)) {
+      if (
+        prev[currentDay as WeekdayType].some(
+          (item: DishType) => item.name === food.name
+        )
+      ) {
         return prev; // Return the previous state if the food already exists
       }
       return {
         ...prev,
-        [currentDay]: [...prev[currentDay], food],
-      };
+        [currentDay]: [...prev[currentDay as WeekdayType], food],
+      } as DietType;
     });
   };
 
@@ -223,17 +218,17 @@ export default function Diet() {
     setDietPlan((prev: DietType) => {
       return {
         ...prev,
-        [currentDay]: prev[currentDay].filter(
+        [currentDay]: prev[currentDay as WeekdayType].filter(
           (item: DishType) => item.name !== food.name
-        ),
-      };
+        ) as DishType[],
+      } as DietType;
     });
   };
 
   const toggleFoodSelection = (food: DishType) => {
-    setSelectedFoods((prev) => {
-      if (prev.some((item) => item.name === food.name)) {
-        return prev.filter((item) => item.name !== food.name);
+    setSelectedFoods((prev: DishType[]) => {
+      if (prev.some((item: DishType) => item.name === food.name)) {
+        return prev.filter((item: DishType) => item.name !== food.name);
       } else {
         return [...prev, food];
       }
@@ -256,8 +251,8 @@ export default function Diet() {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={currentDay}
-            onChange={(event) => {
-              setCurrentDay(event.target.value as WeekDayType);
+            onChange={(event: any) => {
+              setCurrentDay(event.target.value as WeekdayType);
             }}
           >
             {Object.keys(dietPlan).map((day, index) => (
@@ -277,7 +272,9 @@ export default function Diet() {
                 className="text-gray-500 p-2 pl-8 hover:glow"
                 onClick={() => toggleFoodSelection(food)}
                 style={{
-                  borderColor: selectedFoods.some((item) => item.name === food.name)
+                  borderColor: selectedFoods.some(
+                    (item: DishType) => item.name === food.name
+                  )
                     ? "#fdf3f8"
                     : "white",
                 }}
@@ -331,7 +328,7 @@ export default function Diet() {
         ]}
         body={
           <div className="flex h-[150px] w-[210px] flex-col justify-between items-center overflow-x-hidden overflow-y-scroll custom-scrollbar">
-            {foodsFromDb.map((food) => {
+            {foodsFromDb.map((food: DishType) => {
               return (
                 <Card className="text-gray-500 mb-2 mx-2 p-2 pl-8">
                   <div className="w-full flex justify-between">

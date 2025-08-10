@@ -1,7 +1,7 @@
 import React from "react";
-import { DishType } from "@lib/types";
-import { createResourceInDb } from "../services";
+import { DishType } from "../types";
 import CustomForm from "../components/forms/CustomForm";
+import { createResourceInCache } from "../customHooks";
 
 export default function Dish() {
   const [dish, setFood] = React.useState<DishType>({
@@ -13,18 +13,11 @@ export default function Dish() {
     vendor: "",
   });
 
-  const createDish = async () => {
+  const createDish = () => {
     try {
-      const response = await createResourceInDb<DishType>(
-        "Dish",
-        dish.name,
-        JSON.stringify(dish)
-      );
-
-      if (response) {
-        alert("Food created successfully");
-        window.location.reload();
-      }
+      createResourceInCache<DishType>("Dish", dish, "name");
+      alert("Food created successfully");
+      window.location.reload();
     } catch (error) {
       alert("Failed to create food");
       console.error(error);
@@ -79,7 +72,7 @@ export default function Dish() {
             },
           ]}
           longer={true}
-          onSubmit={async () => await createDish()}
+          onSubmit={() => createDish()}
         />
       </div>
     </div>

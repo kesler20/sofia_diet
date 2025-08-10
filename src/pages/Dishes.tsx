@@ -1,12 +1,12 @@
 import React from "react";
 import MainButton from "../components/button/MainButton";
-import {
-  createResourceInDb,
-  deleteResourceInDb,
-  readResourceInDb,
-} from "../services";
-import { DishAttributeType, DishType } from "@lib/types";
+import { DishAttributeType, DishType } from "../types";
 import DishesTable from "../components/table/FoodTable";
+import {
+  createResourceInCache,
+  readResourceInCache,
+  removeResourceInCache,
+} from "../customHooks";
 
 export default function Meal() {
   const [foodsFromDb, setFoodsFromDb] = React.useState<DishType[]>([]);
@@ -15,8 +15,8 @@ export default function Meal() {
   const [foodsChanged, setFoodsChanged] = React.useState<DishType[]>([]);
 
   React.useEffect(() => {
-    const getFoods = async () => {
-      const foods = await readResourceInDb<DishType[]>("Dish");
+    const getFoods = () => {
+      const foods = readResourceInCache<DishType>("Dish");
 
       if (!foods) {
         return;
@@ -27,13 +27,13 @@ export default function Meal() {
     getFoods();
   }, []);
 
-  const deleteFood = async (foodName: string) => {
+  const deleteFood = (foodName: string) => {
     try {
-      const response = await deleteResourceInDb("Food", foodName);
-      if (response) {
-        setFoodsFromDb(foodsFromDb.filter((f) => f.name !== foodName));
-        alert("Food deleted successfully");
-      }
+      removeResourceInCache<DishType>("Dish", "name", foodName);
+      setFoodsFromDb((prev: DishType[]) =>
+        prev.filter((f: DishType) => f.name !== foodName)
+      );
+      alert("Food deleted successfully");
     } catch (error) {
       alert("Failed to delete food");
       console.error(error);
@@ -45,7 +45,7 @@ export default function Meal() {
     foodAttribute: DishAttributeType,
     value: number | string
   ) => {
-    const foodToUpdate = foodsFromDb.find((f) => f.name === foodName);
+    const foodToUpdate = foodsFromDb.find((f: DishType) => f.name === foodName);
     if (!foodToUpdate) {
       return;
     }
@@ -53,7 +53,7 @@ export default function Meal() {
     (foodToUpdate[foodAttribute as keyof DishType] as typeof value) = value;
 
     setFoodsFromDb(
-      foodsFromDb.map((food) => {
+      foodsFromDb.map((food: DishType) => {
         if (food.name === foodName) {
           return foodToUpdate;
         }
@@ -64,21 +64,9 @@ export default function Meal() {
     setFoodsChanged([...foodsChanged, foodToUpdate]);
   };
 
-  const saveChanges = async () => {
-    foodsChanged.forEach(async (food) => {
-      try {
-        const response = await createResourceInDb<DishType>(
-          "Dish",
-          food.name,
-          JSON.stringify(food)
-        );
-        if (response) {
-          alert(`${food.name} updated successfully`);
-        }
-      } catch (error) {
-        alert(`Failed to update dish ${food.name}`);
-        console.error(error);
-      }
+  const saveChanges = () => {
+    foodsChanged.forEach((food: DishType) => {
+      createResourceInCache<DishType>("Dish", food, "name");
     });
   };
 

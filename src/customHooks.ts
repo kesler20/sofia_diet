@@ -14,11 +14,71 @@ export const getResourceFromCache = <T>(key: string): T | undefined => {
   }
 };
 
-export const createResourceInCache = <T>(key: string, value: T) => {
+// New: read an array collection from localStorage acting like a simple DB table
+export const readResourceInCache = <T>(collectionKey: string): T[] | undefined => {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    const s = localStorage.getItem(collectionKey);
+    if (!s) return undefined;
+    const arr = JSON.parse(s);
+    return Array.isArray(arr) ? (arr as T[]) : undefined;
   } catch (error) {
-    console.error(`Error setting item ${key} in localStorage`, error);
+    console.error(
+      `Error reading collection ${collectionKey} from localStorage`,
+      error
+    );
+    return undefined;
+  }
+};
+
+// Updated: upsert into an array collection. If uniqueKey is provided, replace existing by that key; otherwise overwrite collection with [value]
+export const createResourceInCache = <T extends Record<string, any>>(
+  collectionKey: string,
+  value: T,
+  uniqueKey?: keyof T
+) => {
+  try {
+    if (!uniqueKey) {
+      localStorage.setItem(collectionKey, JSON.stringify([value]));
+      return;
+    }
+
+    const existing = readResourceInCache<T>(collectionKey) ?? [];
+    const idx = existing.findIndex(
+      (item) => item && item[uniqueKey] === value[uniqueKey]
+    );
+
+    if (idx >= 0) {
+      existing[idx] = value;
+    } else {
+      existing.push(value);
+    }
+
+    localStorage.setItem(collectionKey, JSON.stringify(existing));
+  } catch (error) {
+    console.error(
+      `Error upserting into collection ${collectionKey} in localStorage`,
+      error
+    );
+  }
+};
+
+// New: remove from an array collection by unique key/value
+export const removeResourceInCache = <T extends Record<string, any>>(
+  collectionKey: string,
+  uniqueKey: keyof T,
+  uniqueValue: T[keyof T]
+) => {
+  try {
+    const existing = readResourceInCache<T>(collectionKey) ?? [];
+    const filtered = existing.filter(
+      (item) => item && item[uniqueKey] !== uniqueValue
+    );
+    localStorage.setItem(collectionKey, JSON.stringify(filtered));
+  } catch (error) {
+    console.error(
+      `Error removing from collection ${collectionKey} in localStorage`,
+      error
+    );
   }
 };
 
@@ -103,7 +163,12 @@ export const useStoredValue = <T>(
     return storedState === undefined ? defaultValue : (storedState as T);
   });
   useEffect(() => {
-    createResourceInCache(key, value);
+    // Persist raw value for generic key/value storage
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(`Error setting item ${key} in localStorage`, error);
+    }
   }, [key, value]);
   return [value as T, setValue];
 };
