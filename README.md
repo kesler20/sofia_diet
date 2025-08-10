@@ -7,7 +7,7 @@
 | Badge                                                                                       | Description                                     |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | ![GitHub Issues](https://img.shields.io/github/issues/kesler20/sofia_diet)                  | Open GitHub issues.                             |
-| ![CI Pipeline](https://github.com/kesler20/sofia_diet/actions/workflows/ci.yml/badge.svg)   | CI Pipeline                                     |
+| ![CI Pipeline](https://github.com/kesler20/sofia_diet/actions/workflows/ci-cd-gh-pages.yml/badge.svg)   | CI Pipeline                         |
 | pnpm                                                                                        | Package manager                                 |
 | vite                                                                                        | Bundler                                         |
 | nodejs                                                                                      | Runtime                                         |
