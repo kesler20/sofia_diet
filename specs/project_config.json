@@ -1,0 +1,23 @@
+{
+  "home_root": {
+    "snippets": [
+      "protocol",
+      "00 PKM",
+      "3 Resources",
+      "Code Snippets"
+    ],
+    "vault": [
+      "protocol",
+      "00 PKM",
+      "3 Resources",
+      "Vault"
+    ]
+  },
+  "project_root": {
+    "dao_output_code": [],
+    "dto_output_code": [],
+    "api_output_code": [],
+    "test_services_output_code": [],
+    "test_api_output_code": []
+  }
+}

@@ -1,12 +1,12 @@
 import React from "react";
-import MainButton from "../components/button/MainButton";
-import { DishAttributeType, DishType } from "../types";
-import DishesTable from "../components/table/FoodTable";
+import MainButton from "../../components/button/MainButton";
+import { DishAttributeType, DishType } from "../../types";
+import DishesTable from "../../components/table/FoodTable";
 import {
   createResourceInCache,
   readResourceInCache,
   removeResourceInCache,
-} from "../customHooks";
+} from "../../customHooks";
 
 export default function Meal() {
   const [foodsFromDb, setFoodsFromDb] = React.useState<DishType[]>([]);

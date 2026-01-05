@@ -1,48 +1,101 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
-import Meal from "./Dishes";
-import Dish from "./Dish";
-import Diet from "./Diet";
+import Meal from "./diet/Dishes";
+import Dish from "./diet/Dish";
+import Diet from "./diet/Diet";
+import BudgetsPage from "./finance/BudgetsPage";
+import VoiceEmailReader from "./inbox/VoiceEmailReader";
+import InvestmentPlannerPage from "./finance/InvestmentPlannerPage";
+import ReceiptSplitManager from "./shopping/ReceiptSplitManager";
+import BodyFatPlanner from "./diet/BodyFatPlanner";
+import ShoppingListManager from "./shopping/ShoppingListManager";
 
-export type PageMetaData = {
+type PageMetaData = {
   name: string;
   link: string;
   pageComponent: React.ReactNode;
 };
 
+export type ValidViews = "diet" | "finance" | "shopping" | "inbox";
+export const validViewsValues = ["diet", "finance", "shopping", "inbox"];
+
+export type Pages = {
+  [K in ValidViews]: PageMetaData[];
+};
+
 /**
  * a list containing the metadata of the pages, including { name, pageIcon and link, pageComponent }
  */
-export const pages: PageMetaData[] = [
-  {
-    name: "Plan Diet",
-    link: "/diet",
-    pageComponent: <Diet />,
-  },
-  {
-    name: "Edit Dishes",
-    link: "/dishes",
-    pageComponent: <Meal />,
-  },
-  {
-    name: "Add Dish",
-    link: "/",
-    pageComponent: <Dish />,
-  },
-];
+export const pages: Pages = {
+  finance: [
+    {
+      name: "Plan Investments",
+      link: "/investments",
+      pageComponent: <InvestmentPlannerPage />,
+    },
+    {
+      name: "Plan Finances",
+      link: "/finance",
+      pageComponent: <BudgetsPage />,
+    },
+  ],
+  diet: [
+    {
+      name: "Body Fat Planner",
+      link: "/body-fat-planner",
+      pageComponent: <BodyFatPlanner />,
+    },
+    {
+      name: "Plan Diet",
+      link: "/diet",
+      pageComponent: <Diet />,
+    },
+    {
+      name: "Edit Dishes",
+      link: "/dishes",
+      pageComponent: <Meal />,
+    },
+    {
+      name: "Add Dish",
+      link: "/",
+      pageComponent: <Dish />,
+    },
+  ],
+  shopping: [
+    {
+      name: "Shopping Lists Page",
+      link: "/shopping",
+      pageComponent: <ShoppingListManager />,
+    },
+    {
+      name: "Shopping Page",
+      link: "/receipts",
+      pageComponent: <ReceiptSplitManager />,
+    },
+  ],
+  inbox: [
+    {
+      name: "Voice Reader",
+      link: "/inbox",
+      pageComponent: <VoiceEmailReader />,
+    },
+  ],
+};
 
 export default function Pages() {
   return (
     <Routes>
-      {pages.map((pageMetaData, index) => {
-        return (
-          <Route
-            key={index}
-            path={pageMetaData.link}
-            element={pageMetaData.pageComponent}
-          />
-        );
-      })}
+      {Object.values(pages)
+        .flat()
+        .map((pageMetaData, index) => {
+          return (
+            <Route
+              key={index}
+              path={pageMetaData.link}
+              element={pageMetaData.pageComponent}
+            />
+          );
+        })}
     </Routes>
   );
 }

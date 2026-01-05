@@ -1,7 +1,7 @@
 import React from "react";
-import { DishType } from "../types";
-import CustomForm from "../components/forms/CustomForm";
-import { createResourceInCache } from "../customHooks";
+import { DishType } from "../../types";
+import CustomForm from "../../components/forms/CustomForm";
+import { createResourceInCache } from "../../customHooks";
 
 export default function Dish() {
   const [dish, setFood] = React.useState<DishType>({

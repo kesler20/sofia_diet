@@ -86,6 +86,17 @@ code {
   );
 }
 
+/* Hide scrollbar but keep scrollability */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
 .modal__card__btn--create:hover {
   /* global 94%+ browsers support */
   background: linear-gradient(

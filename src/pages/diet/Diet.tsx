@@ -1,9 +1,9 @@
 import React from "react";
-import CustomModal from "../components/modal/CustomModal";
+import CustomModal from "../../components/modal/CustomModal";
 import { MenuItem, Select } from "@mui/material";
-import { DietType, DishType, WeekdayType } from "../types";
+import { DietType, DishType, WeekdayType } from "../../types";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
-import { readResourceInCache, createResourceInCache } from "../customHooks";
+import { readResourceInCache, createResourceInCache } from "../../customHooks";
 
 function Card(props: {
   className?: string;
